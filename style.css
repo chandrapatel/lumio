@@ -1,0 +1,937 @@
+/*
+Theme Name: Lumio
+Theme URI: https://github.com/chandrapatel/lumio
+Author: Chandra Patel
+Author URI: https://chandra.dev/
+Description: Lumio is a clean block theme built for writers. Fluid typography, generous whitespace, and a focused reading experience — for any blog, any topic.
+Requires at least: 6.9
+Tested up to: 6.9
+Requires PHP: 8.2
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: lumio
+Tags: blog, one-column, custom-colors, custom-logo, editor-style, featured-images, full-site-editing, block-patterns, rtl-language-support, sticky-post, threaded-comments, translation-ready, wide-blocks
+*/
+
+/* ── Design tokens (mirror of theme.json for CSS-only use) ── */
+:root {
+	--lumio-indigo-100: #f0f0fc;
+	--lumio-indigo-200: #c5c5f5;
+	--lumio-indigo-300: #9a9aee;
+	--lumio-indigo-400: #6f6fe5;
+	--lumio-indigo-500: #4343d7;
+	--lumio-indigo-600: #23239f;
+	--lumio-indigo-700: #0e0e55;
+
+	--lumio-violet-500: #4747d4;
+	--lumio-violet-600: #2626a0;
+
+	--lumio-neutral-100: #f1f1f1;
+	--lumio-neutral-200: #d2d2d5;
+	--lumio-neutral-300: #ababb0;
+	--lumio-neutral-400: #85858d;
+	--lumio-neutral-500: #61616b;
+	--lumio-neutral-600: #404048;
+	--lumio-neutral-700: #212126;
+
+	--lumio-ink:     #0d0d10;
+	--lumio-paper:   #eef0fb;
+	--lumio-paper-2: #e2e6f5;
+	--lumio-paper-3: #f6f7fc;
+	--lumio-surface: #ffffff;
+	--lumio-rule:    #d6daec;
+
+	--lumio-radius:    10px;
+	--lumio-radius-sm: 6px;
+	--lumio-radius-xs: 4px;
+}
+
+/* ── Global resets ── */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+/* ── Accessibility: reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		transition-duration: 0.001ms !important;
+	}
+}
+
+/* ── Focus rings ── */
+:focus-visible {
+	outline: 3px solid var(--lumio-indigo-100);
+	outline-offset: 2px;
+	border-radius: var(--lumio-radius-xs);
+}
+
+a:focus-visible {
+	outline: 3px solid var(--lumio-indigo-100);
+	outline-offset: 2px;
+	border-radius: var(--lumio-radius-xs);
+}
+
+.wp-element-button:focus-visible,
+.wp-block-button__link:focus-visible {
+	outline: 3px solid var(--lumio-indigo-100);
+	outline-offset: 2px;
+}
+
+/* ── Link styles ── */
+.entry-content a,
+.wp-block-post-content a {
+	color: var(--lumio-indigo-600);
+	text-decoration: underline;
+	text-decoration-color: var(--lumio-indigo-500);
+	text-underline-offset: 3px;
+	text-decoration-thickness: 2px;
+	transition: color 0.15s, text-decoration-color 0.15s;
+}
+
+.entry-content a:hover,
+.wp-block-post-content a:hover {
+	color: var(--lumio-indigo-700);
+	text-decoration-thickness: 3px;
+}
+
+.entry-content a:visited,
+.wp-block-post-content a:visited {
+	color: var(--lumio-violet-600);
+	text-decoration-color: var(--lumio-violet-500);
+}
+
+/* ── Header ── */
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	background-color: rgba(238, 240, 251, 0.92);
+	backdrop-filter: saturate(1.4) blur(10px);
+	-webkit-backdrop-filter: saturate(1.4) blur(10px);
+	border-bottom: 1px solid var(--lumio-rule);
+}
+
+.site-header .wp-block-site-title a {
+	font-family: 'Outfit', system-ui, sans-serif;
+	font-weight: 600;
+	font-size: 18px;
+	letter-spacing: -0.01em;
+	color: var(--lumio-ink) !important;
+	text-decoration: none !important;
+	transition: color 0.15s;
+}
+
+.site-header .wp-block-site-title a:hover {
+	color: var(--lumio-indigo-600) !important;
+}
+
+.site-header .wp-block-navigation a {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--lumio-neutral-600);
+	text-decoration: none;
+	transition: color 0.15s;
+}
+
+.site-header .wp-block-navigation a:hover {
+	color: var(--lumio-indigo-600);
+}
+
+/* ── Buttons ── */
+.wp-block-button__link,
+.wp-element-button {
+	transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.05s;
+}
+
+.wp-block-button__link:active,
+.wp-element-button:active {
+	transform: translateY(1px);
+}
+
+/* ── Post title link ── */
+.wp-block-post-title a {
+	text-decoration: none !important;
+	transition: color 0.15s;
+}
+
+.wp-block-post-title a:hover {
+	color: var(--lumio-indigo-600) !important;
+}
+
+/* ── Post list card spacing ── */
+.lumio-post-card {
+	padding-bottom: var(--wp--preset--spacing--7);
+	border-bottom: 1px solid var(--lumio-rule);
+}
+
+.lumio-post-card:last-child {
+	border-bottom: none;
+}
+
+/* ── Post meta row ── */
+.lumio-post-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	font-family: 'Fira Code', ui-monospace, monospace;
+	font-size: clamp(0.625rem, 0.44vw + 0.52rem, 0.75rem);
+	letter-spacing: 0.04em;
+	color: var(--lumio-neutral-500);
+}
+
+.lumio-post-meta .wp-block-post-terms a {
+	color: var(--lumio-indigo-600) !important;
+	text-decoration: none !important;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	transition: color 0.15s;
+}
+
+.lumio-post-meta .wp-block-post-terms a:hover {
+	color: var(--lumio-indigo-700) !important;
+}
+
+/* ── Pullquote ── */
+.wp-block-pullquote {
+	border: none !important;
+	border-left: 3px solid var(--lumio-indigo-500) !important;
+	padding: 4px 0 4px 24px !important;
+	margin: 0;
+}
+
+.wp-block-pullquote blockquote {
+	margin: 0;
+}
+
+.wp-block-pullquote cite,
+.wp-block-pullquote blockquote cite {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-style: normal;
+	font-size: 14px;
+	color: var(--lumio-neutral-500);
+	letter-spacing: 0;
+	display: block;
+	margin-top: 12px;
+}
+
+/* ── Quote ── */
+.wp-block-quote {
+	border-left: 3px solid var(--lumio-indigo-500) !important;
+	padding: 4px 0 4px 24px;
+	margin: 0;
+}
+
+.wp-block-quote cite {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-style: normal;
+	font-size: 14px;
+	color: var(--lumio-neutral-500);
+	display: block;
+	margin-top: 12px;
+}
+
+/* ── Code ── */
+code {
+	font-family: 'Fira Code', ui-monospace, monospace;
+	font-size: 0.875em;
+	color: var(--lumio-indigo-600);
+	background: var(--lumio-indigo-100);
+	padding: 2px 6px;
+	border-radius: var(--lumio-radius-xs);
+}
+
+.wp-block-code code {
+	font-family: 'Fira Code', ui-monospace, monospace;
+	font-size: inherit;
+	color: inherit;
+	background: none;
+	padding: 0;
+	border-radius: 0;
+}
+
+/* ── Table ── */
+
+/* Border + radius on the figure wrapper — overflow:hidden on <table> doesn't clip in browsers */
+.wp-block-table {
+	border: 1px solid var(--lumio-rule);
+	border-radius: var(--lumio-radius);
+	overflow: hidden;
+	background: var(--lumio-surface);
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.wp-block-table table {
+	width: 100%;
+	border-collapse: collapse;
+	background: transparent;
+}
+
+.wp-block-table thead th {
+	font-family: 'Outfit', system-ui, sans-serif;
+	font-weight: 500;
+	font-size: 13px;
+	letter-spacing: -0.005em;
+	padding: 14px 20px;
+	background: var(--lumio-paper-3);
+	border-bottom: 1px solid var(--lumio-rule);
+	color: var(--lumio-ink);
+	text-align: left;
+}
+
+.wp-block-table tfoot td,
+.wp-block-table tfoot th {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: clamp(0.8125rem, 0.22vw + 0.75rem, 0.875rem);
+	font-weight: 600;
+	padding: 12px 20px;
+	background: var(--lumio-paper-3);
+	border-top: 1px solid var(--lumio-rule);
+	color: var(--lumio-ink);
+}
+
+.wp-block-table td,
+.wp-block-table tbody th {
+	padding: 14px 20px;
+	border-bottom: 1px solid var(--lumio-rule);
+	vertical-align: top;
+	color: var(--lumio-neutral-700);
+}
+
+.wp-block-table tbody tr:last-child td,
+.wp-block-table tbody tr:last-child th {
+	border-bottom: none;
+}
+
+/* Striped table style */
+.wp-block-table.is-style-stripes tbody tr:nth-child(odd) {
+	background-color: var(--lumio-paper-3);
+}
+
+.wp-block-table.is-style-stripes tbody tr:nth-child(even) {
+	background-color: var(--lumio-surface);
+}
+
+/* Inline code inside table cells */
+.wp-block-table td code,
+.wp-block-table th code {
+	font-family: 'Fira Code', ui-monospace, monospace;
+	font-size: 12px;
+	color: var(--lumio-indigo-600);
+	background: var(--lumio-indigo-100);
+	padding: 2px 6px;
+	border-radius: var(--lumio-radius-xs);
+}
+
+/* Table caption */
+.wp-block-table figcaption {
+	font-family: 'Fira Code', ui-monospace, monospace;
+	font-size: clamp(0.625rem, 0.44vw + 0.52rem, 0.75rem);
+	letter-spacing: 0.04em;
+	color: var(--lumio-neutral-500);
+	text-align: center;
+	padding: 10px 20px 14px;
+	border-top: 1px solid var(--lumio-rule);
+	background: var(--lumio-paper-3);
+}
+
+/* ── Lists ── */
+.wp-block-list li::marker,
+.entry-content ul li::marker {
+	color: var(--lumio-indigo-500);
+}
+
+/* ── Separator ── */
+.wp-block-separator {
+	border-color: var(--lumio-rule) !important;
+}
+
+.wp-block-separator.is-style-wide {
+	border-color: var(--lumio-rule) !important;
+}
+
+/* ── Pagination ── */
+.wp-block-query-pagination {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: clamp(0.8125rem, 0.22vw + 0.75rem, 0.875rem);
+	margin-top: var(--wp--preset--spacing--7);
+}
+
+.wp-block-query-pagination-numbers .page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 36px;
+	height: 36px;
+	padding: 0 8px;
+	border-radius: var(--lumio-radius-sm);
+	border: 1px solid var(--lumio-rule);
+	color: var(--lumio-neutral-600);
+	text-decoration: none;
+	transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.wp-block-query-pagination-numbers .page-numbers:hover {
+	border-color: var(--lumio-ink);
+	color: var(--lumio-ink);
+}
+
+.wp-block-query-pagination-numbers .page-numbers.current {
+	background: var(--lumio-indigo-500);
+	border-color: var(--lumio-indigo-500);
+	color: #fff;
+}
+
+/* ── Post featured image ── */
+.wp-block-post-featured-image img {
+	border-radius: var(--lumio-radius);
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+/* ── Single post layout ── */
+.lumio-post-header {
+	padding-bottom: var(--wp--preset--spacing--7);
+	border-bottom: 1px solid var(--lumio-rule);
+	margin-bottom: var(--wp--preset--spacing--7);
+}
+
+/* ── Footer ── */
+.site-footer {
+	border-top: 1px solid var(--lumio-rule);
+}
+
+.site-footer a {
+	color: var(--lumio-neutral-600);
+	text-decoration: none;
+	transition: color 0.15s;
+}
+
+.site-footer a:hover {
+	color: var(--lumio-indigo-600);
+}
+
+/* ── 404 Page ── */
+
+.lumio-error-eyebrow {
+	font-family: 'Fira Code', ui-monospace, monospace !important;
+	font-size: clamp(0.625rem, 0.44vw + 0.52rem, 0.75rem) !important;
+	letter-spacing: 0.1em !important;
+	text-transform: uppercase !important;
+	color: var(--lumio-indigo-500) !important;
+}
+
+/* Outlined 404 with gradient fill visible through transparent letter interiors */
+.lumio-error-num {
+	font-family: 'Outfit', system-ui, sans-serif !important;
+	font-weight: 500 !important;
+	font-size: clamp(120px, 18vw, 200px) !important;
+	line-height: 0.9 !important;
+	letter-spacing: -0.04em !important;
+	color: transparent !important;
+	-webkit-text-stroke: 2px var(--lumio-indigo-200);
+	user-select: none;
+	position: relative;
+}
+
+.lumio-error-num::after {
+	content: "404";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(135deg, var(--lumio-indigo-100) 0%, var(--lumio-paper-2) 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	z-index: -1;
+}
+
+.lumio-error-columns .wp-block-column:last-child {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+@media (max-width: 900px) {
+	.lumio-error-columns.wp-block-columns {
+		flex-direction: column !important;
+	}
+
+	.lumio-error-num {
+		font-size: clamp(80px, 22vw, 140px) !important;
+	}
+
+	.lumio-error-columns .wp-block-column:last-child {
+		justify-content: flex-start;
+	}
+
+	.lumio-error-num.has-text-align-right {
+		text-align: left !important;
+	}
+}
+
+.lumio-quick-link .wp-block-button__link {
+	background: var(--lumio-surface) !important;
+	color: var(--lumio-neutral-600) !important;
+	border-color: var(--lumio-rule) !important;
+	font-size: var(--wp--preset--font-size--sm) !important;
+	transition: border-color 0.15s, color 0.15s, background 0.15s !important;
+}
+
+.lumio-quick-link .wp-block-button__link:hover {
+	border-color: var(--lumio-indigo-300) !important;
+	color: var(--lumio-indigo-600) !important;
+	background: var(--lumio-indigo-100) !important;
+}
+
+.lumio-recent-card {
+	overflow: hidden;
+	transition: box-shadow 0.15s, transform 0.15s;
+	text-decoration: none !important;
+}
+
+.lumio-recent-card:hover {
+	box-shadow: 0 4px 20px rgba(67, 67, 215, 0.08);
+	transform: translateY(-2px);
+}
+
+.lumio-recent-card .wp-block-post-title a {
+	text-decoration: none !important;
+	transition: color 0.15s;
+}
+
+.lumio-recent-card:hover .wp-block-post-title a {
+	color: var(--lumio-indigo-600) !important;
+}
+
+.lumio-browse-all a {
+	color: var(--lumio-indigo-600);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	font-weight: 500;
+	transition: color 0.15s;
+}
+
+.lumio-browse-all a:hover {
+	color: var(--lumio-indigo-700);
+}
+
+/* ── 404 / search / no results (legacy class kept for backwards compat) ── */
+.lumio-not-found-title {
+	font-family: 'Fira Code', ui-monospace, monospace;
+	font-size: clamp(4rem, 10vw, 8rem);
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: -0.04em;
+	color: var(--lumio-indigo-200);
+	margin-bottom: 0;
+}
+
+/* ── Search form in blocks ── */
+.wp-block-search__input {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: clamp(1rem, 0.44vw + 0.9rem, 1.125rem);
+	padding: 11px 14px;
+	border-radius: var(--lumio-radius-sm);
+	border: 1px solid var(--lumio-neutral-200);
+	background: var(--lumio-surface);
+	color: var(--lumio-ink);
+	transition: border-color 0.15s, box-shadow 0.15s;
+	width: 100%;
+}
+
+.wp-block-search__input:focus {
+	outline: none;
+	border-color: var(--lumio-indigo-500);
+	box-shadow: 0 0 0 3px var(--lumio-indigo-100);
+}
+
+.wp-block-search__button {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-weight: 500;
+	background: var(--lumio-indigo-500);
+	color: #fff;
+	border: none;
+	padding: 11px 20px;
+	border-radius: var(--lumio-radius-sm);
+	cursor: pointer;
+	transition: background 0.15s;
+}
+
+.wp-block-search__button:hover {
+	background: var(--lumio-indigo-600);
+}
+
+/* ── Post navigation ── */
+.wp-block-post-navigation-link a {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: clamp(0.8125rem, 0.22vw + 0.75rem, 0.875rem);
+	font-weight: 500;
+	color: var(--lumio-indigo-600);
+	text-decoration: none;
+	transition: color 0.15s;
+}
+
+.wp-block-post-navigation-link a:hover {
+	color: var(--lumio-indigo-700);
+}
+
+/* ── Comments ── */
+.wp-block-comments {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+}
+
+.comment-respond .comment-form input,
+.comment-respond .comment-form textarea {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: 14px;
+	padding: 11px 14px;
+	border-radius: var(--lumio-radius-sm);
+	border: 1px solid var(--lumio-neutral-200);
+	background: var(--lumio-surface);
+	color: var(--lumio-ink);
+	transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.comment-respond .comment-form input:focus,
+.comment-respond .comment-form textarea:focus {
+	outline: none;
+	border-color: var(--lumio-indigo-500);
+	box-shadow: 0 0 0 3px var(--lumio-indigo-100);
+}
+
+/* ── Archive title ── */
+.wp-block-query-title,
+.wp-block-post-terms__title {
+	font-family: 'Outfit', system-ui, sans-serif;
+	font-weight: 500;
+	letter-spacing: -0.015em;
+}
+
+/* ── Sticky header: overflow:hidden on ancestors breaks position:sticky ── */
+html,
+body,
+.wp-site-blocks {
+	overflow: visible !important;
+}
+
+.wp-site-blocks {
+	padding-top: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════
+   FORM ELEMENTS
+   Applies to: comment form, search block, login,
+   and any WP-rendered form on the front end.
+═══════════════════════════════════════════════ */
+
+/* Shared input/select/textarea base */
+.wp-block-post-comments-form input[type="text"],
+.wp-block-post-comments-form input[type="email"],
+.wp-block-post-comments-form input[type="url"],
+.wp-block-post-comments-form textarea,
+.comment-respond .comment-form input[type="text"],
+.comment-respond .comment-form input[type="email"],
+.comment-respond .comment-form input[type="url"],
+.comment-respond .comment-form textarea,
+.wp-block-search__input,
+.wpcf7 input[type="text"],
+.wpcf7 input[type="email"],
+.wpcf7 input[type="tel"],
+.wpcf7 textarea,
+.wpcf7 select {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: clamp(0.8125rem, 0.22vw + 0.75rem, 0.875rem);
+	padding: 11px 14px;
+	border-radius: var(--lumio-radius-sm);
+	border: 1px solid var(--lumio-neutral-200);
+	background: var(--lumio-surface);
+	color: var(--lumio-ink);
+	width: 100%;
+	transition: border-color 0.15s, box-shadow 0.15s;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+/* Focus state */
+.wp-block-post-comments-form input[type="text"]:focus,
+.wp-block-post-comments-form input[type="email"]:focus,
+.wp-block-post-comments-form input[type="url"]:focus,
+.wp-block-post-comments-form textarea:focus,
+.comment-respond .comment-form input[type="text"]:focus,
+.comment-respond .comment-form input[type="email"]:focus,
+.comment-respond .comment-form input[type="url"]:focus,
+.comment-respond .comment-form textarea:focus,
+.wpcf7 input:focus,
+.wpcf7 textarea:focus,
+.wpcf7 select:focus {
+	outline: none;
+	border-color: var(--lumio-indigo-500);
+	box-shadow: 0 0 0 3px var(--lumio-indigo-100);
+}
+
+/* Placeholder text */
+.wp-block-post-comments-form input::placeholder,
+.wp-block-post-comments-form textarea::placeholder,
+.comment-respond .comment-form input::placeholder,
+.comment-respond .comment-form textarea::placeholder,
+.wp-block-search__input::placeholder {
+	color: var(--lumio-neutral-400);
+	opacity: 1;
+}
+
+/* Invalid / error state — set via aria-invalid="true" or .invalid class */
+.wp-block-post-comments-form input[aria-invalid="true"],
+.wp-block-post-comments-form textarea[aria-invalid="true"],
+.comment-respond .comment-form input.error,
+.comment-respond .comment-form textarea.error,
+.wpcf7 .wpcf7-not-valid {
+	border-color: #9a1c1c;
+	box-shadow: 0 0 0 3px #f8e4e4;
+}
+
+/* Textarea */
+.wp-block-post-comments-form textarea,
+.comment-respond .comment-form textarea,
+.wpcf7 textarea {
+	min-height: 120px;
+	resize: vertical;
+	line-height: 1.65;
+}
+
+/* Labels */
+.wp-block-post-comments-form label,
+.comment-respond .comment-form label,
+.wpcf7 label {
+	display: block;
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: clamp(0.8125rem, 0.22vw + 0.75rem, 0.875rem);
+	font-weight: 500;
+	color: var(--lumio-neutral-700);
+	letter-spacing: -0.005em;
+	margin-bottom: 6px;
+}
+
+/* Field wrapper — adds spacing between fields */
+.wp-block-post-comments-form p,
+.comment-respond .comment-form p {
+	margin-bottom: 18px;
+}
+
+/* Help / description text */
+.comment-form .description,
+.wp-block-post-comments-form .description,
+.comment-notes {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: clamp(0.625rem, 0.44vw + 0.52rem, 0.75rem);
+	color: var(--lumio-neutral-500);
+	margin-top: 4px;
+	display: block;
+}
+
+/* Validation error message */
+.wpcf7-not-valid-tip,
+.comment-form .form-submit .comment-error {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-size: clamp(0.625rem, 0.44vw + 0.52rem, 0.75rem);
+	color: #9a1c1c;
+	margin-top: 4px;
+	display: block;
+}
+
+/* Select — custom arrow */
+.wpcf7 select,
+.comment-respond select {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2361616b' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 14px center;
+	padding-right: 36px;
+	cursor: pointer;
+}
+
+/* Radio & checkbox — accent colour */
+.wp-block-post-comments-form input[type="checkbox"],
+.wp-block-post-comments-form input[type="radio"],
+.comment-respond .comment-form input[type="checkbox"],
+.comment-respond .comment-form input[type="radio"] {
+	accent-color: var(--lumio-indigo-500);
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+/* Comment form submit button */
+.wp-block-post-comments-form .form-submit input[type="submit"],
+.comment-respond .comment-form .form-submit input[type="submit"] {
+	font-family: 'Fira Sans', system-ui, sans-serif;
+	font-weight: 500;
+	font-size: clamp(0.8125rem, 0.22vw + 0.75rem, 0.875rem);
+	letter-spacing: -0.005em;
+	padding: 11px 20px;
+	border-radius: var(--lumio-radius-sm);
+	border: 1px solid transparent;
+	background: var(--lumio-indigo-500);
+	color: #fff;
+	cursor: pointer;
+	transition: background-color 0.15s, transform 0.05s;
+	width: auto;
+}
+
+.wp-block-post-comments-form .form-submit input[type="submit"]:hover,
+.comment-respond .comment-form .form-submit input[type="submit"]:hover {
+	background: var(--lumio-indigo-600);
+}
+
+.wp-block-post-comments-form .form-submit input[type="submit"]:active,
+.comment-respond .comment-form .form-submit input[type="submit"]:active {
+	transform: translateY(1px);
+}
+
+/* ═══════════════════════════════════════════════
+   IMAGE & MEDIA CAPTIONS
+═══════════════════════════════════════════════ */
+
+.wp-block-image figcaption,
+.wp-block-image .wp-element-caption,
+.wp-block-gallery figcaption,
+.wp-block-gallery .wp-element-caption,
+.wp-block-embed figcaption,
+.wp-block-video figcaption,
+.wp-block-audio figcaption {
+	font-family: 'Fira Code', ui-monospace, monospace;
+	font-size: clamp(0.625rem, 0.44vw + 0.52rem, 0.75rem);
+	letter-spacing: 0.04em;
+	color: var(--lumio-neutral-500);
+	text-align: center;
+	margin-top: 10px;
+}
+
+/* ═══════════════════════════════════════════════
+   INLINE TYPOGRAPHY (inside post content)
+═══════════════════════════════════════════════ */
+
+.wp-block-post-content strong,
+.entry-content strong {
+	font-weight: 600;
+	color: var(--lumio-ink);
+}
+
+.wp-block-post-content em,
+.entry-content em {
+	font-style: italic;
+}
+
+/* Highlighted text — uses the brand-soft palette colour */
+.wp-block-post-content mark,
+.entry-content mark {
+	background-color: var(--lumio-indigo-100);
+	color: var(--lumio-ink);
+	padding: 1px 3px;
+	border-radius: var(--lumio-radius-xs);
+}
+
+.wp-block-post-content del,
+.entry-content del,
+.wp-block-post-content s,
+.entry-content s {
+	color: var(--lumio-neutral-500);
+	text-decoration-color: var(--lumio-neutral-400);
+}
+
+.wp-block-post-content abbr[title],
+.entry-content abbr[title] {
+	text-decoration: underline dotted var(--lumio-neutral-400);
+	cursor: help;
+}
+
+.wp-block-post-content sub,
+.entry-content sub,
+.wp-block-post-content sup,
+.entry-content sup {
+	font-size: 0.75em;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+
+.wp-block-post-content sup,
+.entry-content sup { top: -0.5em; }
+
+.wp-block-post-content sub,
+.entry-content sub { bottom: -0.25em; }
+
+.wp-block-post-content kbd,
+.entry-content kbd {
+	font-family: 'Fira Code', ui-monospace, monospace;
+	font-size: 0.85em;
+	background: var(--lumio-paper-3);
+	border: 1px solid var(--lumio-neutral-200);
+	border-bottom-width: 2px;
+	border-radius: var(--lumio-radius-xs);
+	padding: 1px 6px;
+	color: var(--lumio-ink);
+}
+
+/* ═══════════════════════════════════════════════
+   POST CONTENT SPACING
+   Tightens the blockGap between headings that
+   immediately follow paragraphs and vice versa.
+═══════════════════════════════════════════════ */
+
+.wp-block-post-content > * + h2,
+.wp-block-post-content > * + h3,
+.wp-block-post-content > * + h4 {
+	margin-top: var(--wp--preset--spacing--7);
+}
+
+.wp-block-post-content > h2 + *,
+.wp-block-post-content > h3 + *,
+.wp-block-post-content > h4 + * {
+	margin-top: var(--wp--preset--spacing--3);
+}
+
+/* Keep consecutive paragraphs at standard gap */
+.wp-block-post-content > p + p {
+	margin-top: var(--wp--preset--spacing--5);
+}
+
+/* Post Author Block */
+.wp-block-post-author__avatar img {
+	border-radius: 50%;
+}
+.wp-block-post-author__byline {
+	color: var(--wp--preset--color--neutral-500);
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+.wp-block-post-author__name {
+	font-family: var(--wp--preset--font-family--outfit);
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 500;
+}
+.wp-block-post-author__bio {
+	font-family: var(--wp--preset--font-family--fira-sans);
+	font-size: var(--wp--preset--font-size--base);
+}
+
+/* Search results title */
+.lumio-search-query {
+	border-bottom: 3px solid var(--lumio-indigo-200);
+	color: var(--lumio-indigo-600);
+}
