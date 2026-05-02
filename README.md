@@ -10,6 +10,12 @@ Lumio is a clean WordPress block theme built for writers. Fluid typography, gene
 
 ---
 
+## Disclaimer
+
+I built Lumio for my personal blog. It hasn't been tested thoroughly across environments and likely contains bugs. Expect rough edges.
+
+---
+
 ## Features
 
 - **Full Site Editing** — Block-based templates and template parts
