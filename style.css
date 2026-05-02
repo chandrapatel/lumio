@@ -914,3 +914,8 @@ body,
 	border-bottom: 3px solid var(--wp--preset--color--brand-200);
 	color: var(--wp--preset--color--brand-hover);
 }
+
+/* Misc fixes */
+.wp-block-group:empty {
+	display: none;
+}
