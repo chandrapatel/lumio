@@ -400,13 +400,8 @@ code {
 }
 
 .site-footer a {
-	color: var(--wp--preset--color--text-secondary);
 	text-decoration: none;
 	transition: color 0.15s;
-}
-
-.site-footer a:hover {
-	color: var(--wp--preset--color--brand-hover);
 }
 
 /* ── 404 Page ── */
