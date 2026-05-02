@@ -72,19 +72,32 @@ All fonts use `font-display: swap`.
 
 ## Color Palette
 
+Slugs are usage-based, so swapping in a different palette doesn't make the names misleading. All colors live in `theme.json`; `style.css` consumes them via the WP-generated `--wp--preset--color--*` CSS variables.
+
 | Token | Value | Role |
 |---|---|---|
-| `ink` | `#0d0d10` | Primary text |
-| `paper` | `#eef0fb` | Page background |
-| `paper-2` | `#e2e6f5` | Secondary background |
-| `paper-3` | `#f6f7fc` | Subtle backgrounds |
-| `surface` | `#ffffff` | Cards, overlays |
-| `rule` | `#d6daec` | Borders, dividers |
-| `brand` | `#4343d7` | Primary actions, links |
-| `brand-soft` | `#f0f0fc` | Light accent fills |
-| `brand-deep` | `#0e0e55` | Dark accent |
+| `text` | `#0d0d10` | Primary text, headings |
+| `text-body` | `#212126` | Body paragraphs, lists, tables |
+| `text-secondary` | `#404048` | Navigation, excerpts, footer |
+| `text-muted` | `#61616b` | Meta, captions, tagline |
+| `text-subtle` | `#85858d` | Placeholders, eyebrows, separators |
+| `text-on-dark` | `#e9e9ee` | Code/preformatted text |
+| `background` | `#eef0fb` | Page background |
+| `background-alt` | `#e2e6f5` | Secondary background (e.g. 404 gradient) |
+| `background-subtle` | `#f6f7fc` | Subtle fills (table headers, kbd, stripes) |
+| `surface` | `#ffffff` | Cards, form inputs |
+| `border` | `#d6daec` | Borders, dividers |
+| `border-strong` | `#d2d2d5` | Form input borders |
+| `brand-soft` | `#f0f0fc` | Light brand fill, mark, code background |
+| `brand-200` | `#c5c5f5` | Brand tint — text-stroke, underline decoration |
+| `brand-300` | `#9a9aee` | Brand tint — hover border |
+| `brand` | `#4343d7` | Primary actions, buttons, links |
+| `brand-hover` | `#23239f` | Link/button hover states |
+| `brand-deep` | `#0e0e55` | Strongest brand shade |
+| `link-visited` | `#4747d4` | Visited link decoration |
+| `link-visited-deep` | `#2626a0` | Visited link color |
 
-A 5-step neutral scale (`neutral-200` → `neutral-700`) and two violet shades (`violet-500`, `violet-600`) are also included for secondary text and visited links.
+Border radii are exposed via `settings.custom.radius` as `--wp--custom--radius--default` (`10px`), `--wp--custom--radius--sm` (`6px`), and `--wp--custom--radius--xs` (`4px`).
 
 ---
 
