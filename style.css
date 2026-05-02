@@ -94,13 +94,13 @@ a:focus-visible {
 	font-weight: 600;
 	font-size: 18px;
 	letter-spacing: -0.01em;
-	color: var(--wp--preset--color--text) !important;
+	color: var(--wp--preset--color--brand);
 	text-decoration: none !important;
 	transition: color 0.15s;
 }
 
 .site-header .wp-block-site-title a:hover {
-	color: var(--wp--preset--color--brand-hover) !important;
+	color: var(--wp--preset--color--brand-hover);
 }
 
 .site-header .wp-block-navigation a {
