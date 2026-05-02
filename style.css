@@ -171,6 +171,23 @@ a:focus-visible {
 	color: var(--wp--preset--color--brand-deep) !important;
 }
 
+/*  --- Post Terms (categories/tags) --- */
+.wp-block-post-terms {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.wp-block-post-terms a {
+	transition: background .15s, border-color .15s;
+}
+
+.wp-block-post-terms .wp-block-post-terms__separator {
+	display: none;
+}
+
+
 /* ── Pullquote ── */
 .wp-block-pullquote {
 	border: none !important;

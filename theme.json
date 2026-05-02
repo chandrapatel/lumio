@@ -450,7 +450,27 @@
 					"link": {
 						"color": { "text": "var(--wp--preset--color--brand-hover)" },
 						"typography": { "textDecoration": "none" },
-						":hover": { "color": { "text": "var(--wp--preset--color--brand-deep)" } }
+						"border": {
+							"width": "1px",
+							"style": "solid",
+							"color": "var(--wp--preset--color--brand-200)",
+							"radius": "999px"
+						},
+						"spacing": {
+							"padding": {
+								"top": "8px",
+								"right": "12px",
+								"bottom": "8px",
+								"left": "12px"
+							}
+						},
+						":hover": {
+							"color": {
+								"background": "var(--wp--preset--color--brand-200)",
+								"text": "var(--wp--preset--color--brand-hover)"
+							},
+							"border": { "color": "var(--wp--preset--color--brand-300)" }
+						}
 					}
 				}
 			},
