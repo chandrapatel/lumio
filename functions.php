@@ -105,3 +105,44 @@ function lumio_sticky_header_styles(): void {
 	echo '<style>html,body,.wp-site-blocks{overflow:visible!important}</style>' . PHP_EOL;
 }
 add_action( 'wp_head', 'lumio_sticky_header_styles', 999 );
+
+/**
+ * Register custom block styles.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function lumio_register_block_styles(): void {
+
+	$glass_style = [
+		'name'  => 'glass',
+		'label' => __( 'Glass', 'lumio' ),
+	];
+
+	$glass_raised_style = [
+		'name'  => 'glass-raised',
+		'label' => __( 'Glass Raised', 'lumio' ),
+	];
+
+	$glass_solid_style = [
+		'name'  => 'glass-solid',
+		'label' => __( 'Glass Solid', 'lumio' ),
+	];
+
+	register_block_style( 'core/group', $glass_style );
+	register_block_style( 'core/group', $glass_raised_style );
+	register_block_style( 'core/group', $glass_solid_style );
+	register_block_style( 'core/column', $glass_style );
+	register_block_style( 'core/column', $glass_raised_style );
+	register_block_style( 'core/column', $glass_solid_style );
+
+	register_block_style(
+		'core/button',
+		[
+			'name'  => 'ghost',
+			'label' => __( 'Ghost', 'lumio' ),
+		]
+	);
+}
+add_action( 'init', 'lumio_register_block_styles' );

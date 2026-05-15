@@ -242,15 +242,15 @@
 		"spacing": {
 			"units": [ "%", "px", "em", "rem", "vh", "vw" ],
 			"spacingSizes": [
-				{ "slug": "1", "size": "4px",  "name": "1" },
-				{ "slug": "2", "size": "8px",  "name": "2" },
-				{ "slug": "3", "size": "12px", "name": "3" },
-				{ "slug": "4", "size": "16px", "name": "4" },
-				{ "slug": "5", "size": "24px", "name": "5" },
-				{ "slug": "6", "size": "32px", "name": "6" },
-				{ "slug": "7", "size": "48px", "name": "7" },
-				{ "slug": "8", "size": "64px", "name": "8" },
-				{ "slug": "9", "size": "96px", "name": "9" }
+				{ "slug": "1", "size": "4px",  "name": "4px" },
+				{ "slug": "2", "size": "8px",  "name": "8px" },
+				{ "slug": "3", "size": "12px", "name": "12px" },
+				{ "slug": "4", "size": "16px", "name": "16px" },
+				{ "slug": "5", "size": "24px", "name": "24px" },
+				{ "slug": "6", "size": "32px", "name": "32px" },
+				{ "slug": "7", "size": "48px", "name": "48px" },
+				{ "slug": "8", "size": "64px", "name": "64px" },
+				{ "slug": "9", "size": "96px", "name": "96px" }
 			]
 		},
 		"border": {

@@ -1,0 +1,90 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Glassy",
+	"description": "Frosted, translucent surfaces with backdrop-blur and layered specular highlights. Apple-leaning. Indigo brand preserved.",
+	"settings": {
+		"custom": {
+			"_notes": {
+				"intent": "Light, refractive feel. Surfaces are translucent white with backdrop blur; depth comes from 2-layer outer shadows + inset top highlight; buttons get a gradient fill and specular sheen.",
+				"consumed-by": "styles/lumio-surfaces.css — provides .glass primitive and reads these tokens.",
+				"preserves": [
+					"indigo brand palette",
+					"Outfit / Fira Sans / Fira Code",
+					"fluid type",
+					"9-step spacing"
+				]
+			},
+			"radius": {
+				"default": "18px",
+				"xs": "6px",
+				"sm": "10px",
+				"md": "14px",
+				"lg": "20px",
+				"xl": "28px",
+				"pill": "999px"
+			},
+			"page": {
+				"bg": "radial-gradient(1200px 800px at 12% -10%, #d8d8ff 0%, transparent 55%), radial-gradient(900px 700px at 110% 10%, #c8e0ff 0%, transparent 60%), radial-gradient(900px 600px at 60% 110%, #ffe1f5 0%, transparent 55%), linear-gradient(180deg, #eef0fb 0%, #e8eaf6 100%)"
+			},
+			"surface": {
+				"bg": "rgba(255, 255, 255, 0.55)",
+				"bg-strong": "rgba(255, 255, 255, 0.72)",
+				"blur": "saturate(180%) blur(24px)",
+				"border": "1px solid rgba(255, 255, 255, 0.7)",
+				"specular": "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 38%, rgba(255,255,255,0) 60%, rgba(0,0,0,0.06) 100%)"
+			},
+			"shadow": {
+				"scale": "1",
+				"elev-0": "0 0 0 1px rgba(15, 18, 60, 0.04)",
+				"elev-1": "0 1px 0 rgba(255,255,255,0.65) inset, 0 1px 2px rgba(15, 18, 60, 0.06), 0 0 0 1px rgba(15, 18, 60, 0.04)",
+				"elev-2": "0 1px 0 rgba(255,255,255,0.7) inset, 0 4px 12px -4px rgba(15, 18, 60, 0.12), 0 2px 4px -2px rgba(15, 18, 60, 0.08), 0 0 0 1px rgba(15, 18, 60, 0.05)",
+				"elev-3": "0 1px 0 rgba(255,255,255,0.8) inset, 0 16px 40px -12px rgba(15, 18, 60, 0.22), 0 6px 16px -6px rgba(15, 18, 60, 0.12), 0 0 0 1px rgba(15, 18, 60, 0.06)",
+				"elev-4": "0 2px 0 rgba(255,255,255,0.85) inset, 0 40px 80px -24px rgba(15, 18, 60, 0.32), 0 12px 28px -10px rgba(15, 18, 60, 0.16), 0 0 0 1px rgba(15, 18, 60, 0.06)"
+			},
+			"btn": {
+				"brand-bg": "linear-gradient(180deg, #6464ec 0%, #4343d7 55%, #3a3ac1 100%)",
+				"brand-shadow": "inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.18), 0 6px 14px -4px rgba(67,67,215,0.45), 0 2px 4px -1px rgba(67,67,215,0.3), 0 0 0 1px #3737b6"
+			},
+			"focus": {
+				"ring": "0 0 0 4px rgba(67, 67, 215, 0.22), 0 0 0 1.5px rgba(67, 67, 215, 0.85), 0 6px 18px -4px rgba(67, 67, 215, 0.35)"
+			},
+			"motion": {
+				"ease-out": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+				"ease-spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+				"t-fast": "120ms",
+				"t-med": "220ms",
+				"t-slow": "360ms"
+			}
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--background)"
+		},
+		"blocks": {
+			"core/button": {
+				"color": {
+					"background": "var(--wp--custom--btn--brand-bg)",
+					"text": "var(--wp--preset--color--surface)"
+				},
+				"border": {
+					"radius": "var(--wp--custom--radius--pill)"
+				},
+				"spacing": {
+					"padding": {
+						"top": "12px",
+						"right": "22px",
+						"bottom": "12px",
+						"left": "22px"
+					}
+				}
+			},
+			"core/post-terms": {
+				"border": {
+					"radius": "var(--wp--custom--radius--pill)"
+				}
+			}
+		}
+	}
+}

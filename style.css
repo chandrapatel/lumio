@@ -63,7 +63,9 @@ a:focus-visible {
 	text-decoration-color: var(--wp--preset--color--brand);
 	text-underline-offset: 3px;
 	text-decoration-thickness: 2px;
-	transition: color 0.15s, text-decoration-color 0.15s;
+	transition:
+		color 0.15s,
+		text-decoration-color 0.15s;
 }
 
 .entry-content a:hover,
@@ -119,7 +121,11 @@ a:focus-visible {
 /* ── Buttons ── */
 .wp-block-button__link,
 .wp-element-button {
-	transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.05s;
+	transition:
+		background-color 0.15s,
+		color 0.15s,
+		border-color 0.15s,
+		transform 0.05s;
 }
 
 .wp-block-button__link:active,
@@ -180,13 +186,14 @@ a:focus-visible {
 }
 
 .wp-block-post-terms a {
-	transition: background .15s, border-color .15s;
+	transition:
+		background 0.15s,
+		border-color 0.15s;
 }
 
 .wp-block-post-terms .wp-block-post-terms__separator {
 	display: none;
 }
-
 
 /* ── Pullquote ── */
 .wp-block-pullquote {
@@ -365,7 +372,10 @@ code {
 	border: 1px solid var(--wp--preset--color--border);
 	color: var(--wp--preset--color--text-secondary);
 	text-decoration: none;
-	transition: border-color 0.15s, color 0.15s, background 0.15s;
+	transition:
+		border-color 0.15s,
+		color 0.15s,
+		background 0.15s;
 }
 
 .wp-block-query-pagination-numbers .page-numbers:hover {
@@ -428,10 +438,14 @@ code {
 }
 
 .lumio-error-num::after {
-	content: "404";
+	content: '404';
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(135deg, var(--wp--preset--color--brand-soft) 0%, var(--wp--preset--color--background-alt) 100%);
+	background: linear-gradient(
+		135deg,
+		var(--wp--preset--color--brand-soft) 0%,
+		var(--wp--preset--color--background-alt) 100%
+	);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
@@ -467,7 +481,10 @@ code {
 	color: var(--wp--preset--color--text-secondary) !important;
 	border-color: var(--wp--preset--color--border) !important;
 	font-size: var(--wp--preset--font-size--sm) !important;
-	transition: border-color 0.15s, color 0.15s, background 0.15s !important;
+	transition:
+		border-color 0.15s,
+		color 0.15s,
+		background 0.15s !important;
 }
 
 .lumio-quick-link .wp-block-button__link:hover {
@@ -478,7 +495,9 @@ code {
 
 .lumio-recent-card {
 	overflow: hidden;
-	transition: box-shadow 0.15s, transform 0.15s;
+	transition:
+		box-shadow 0.15s,
+		transform 0.15s;
 	text-decoration: none !important;
 }
 
@@ -528,7 +547,9 @@ code {
 	border: 1px solid var(--wp--preset--color--border-strong);
 	background: var(--wp--preset--color--surface);
 	color: var(--wp--preset--color--text);
-	transition: border-color 0.15s, box-shadow 0.15s;
+	transition:
+		border-color 0.15s,
+		box-shadow 0.15s;
 	width: 100%;
 }
 
@@ -582,7 +603,9 @@ code {
 	border: 1px solid var(--wp--preset--color--border-strong);
 	background: var(--wp--preset--color--surface);
 	color: var(--wp--preset--color--text);
-	transition: border-color 0.15s, box-shadow 0.15s;
+	transition:
+		border-color 0.15s,
+		box-shadow 0.15s;
 }
 
 .comment-respond .comment-form input:focus,
@@ -618,18 +641,18 @@ body,
 ═══════════════════════════════════════════════ */
 
 /* Shared input/select/textarea base */
-.wp-block-post-comments-form input[type="text"],
-.wp-block-post-comments-form input[type="email"],
-.wp-block-post-comments-form input[type="url"],
+.wp-block-post-comments-form input[type='text'],
+.wp-block-post-comments-form input[type='email'],
+.wp-block-post-comments-form input[type='url'],
 .wp-block-post-comments-form textarea,
-.comment-respond .comment-form input[type="text"],
-.comment-respond .comment-form input[type="email"],
-.comment-respond .comment-form input[type="url"],
+.comment-respond .comment-form input[type='text'],
+.comment-respond .comment-form input[type='email'],
+.comment-respond .comment-form input[type='url'],
 .comment-respond .comment-form textarea,
 .wp-block-search__input,
-.wpcf7 input[type="text"],
-.wpcf7 input[type="email"],
-.wpcf7 input[type="tel"],
+.wpcf7 input[type='text'],
+.wpcf7 input[type='email'],
+.wpcf7 input[type='tel'],
 .wpcf7 textarea,
 .wpcf7 select {
 	font-family: 'Fira Sans', system-ui, sans-serif;
@@ -640,19 +663,21 @@ body,
 	background: var(--wp--preset--color--surface);
 	color: var(--wp--preset--color--text);
 	width: 100%;
-	transition: border-color 0.15s, box-shadow 0.15s;
+	transition:
+		border-color 0.15s,
+		box-shadow 0.15s;
 	appearance: none;
 	-webkit-appearance: none;
 }
 
 /* Focus state */
-.wp-block-post-comments-form input[type="text"]:focus,
-.wp-block-post-comments-form input[type="email"]:focus,
-.wp-block-post-comments-form input[type="url"]:focus,
+.wp-block-post-comments-form input[type='text']:focus,
+.wp-block-post-comments-form input[type='email']:focus,
+.wp-block-post-comments-form input[type='url']:focus,
 .wp-block-post-comments-form textarea:focus,
-.comment-respond .comment-form input[type="text"]:focus,
-.comment-respond .comment-form input[type="email"]:focus,
-.comment-respond .comment-form input[type="url"]:focus,
+.comment-respond .comment-form input[type='text']:focus,
+.comment-respond .comment-form input[type='email']:focus,
+.comment-respond .comment-form input[type='url']:focus,
 .comment-respond .comment-form textarea:focus,
 .wpcf7 input:focus,
 .wpcf7 textarea:focus,
@@ -673,8 +698,8 @@ body,
 }
 
 /* Invalid / error state — set via aria-invalid="true" or .invalid class */
-.wp-block-post-comments-form input[aria-invalid="true"],
-.wp-block-post-comments-form textarea[aria-invalid="true"],
+.wp-block-post-comments-form input[aria-invalid='true'],
+.wp-block-post-comments-form textarea[aria-invalid='true'],
 .comment-respond .comment-form input.error,
 .comment-respond .comment-form textarea.error,
 .wpcf7 .wpcf7-not-valid {
@@ -742,10 +767,10 @@ body,
 }
 
 /* Radio & checkbox — accent colour */
-.wp-block-post-comments-form input[type="checkbox"],
-.wp-block-post-comments-form input[type="radio"],
-.comment-respond .comment-form input[type="checkbox"],
-.comment-respond .comment-form input[type="radio"] {
+.wp-block-post-comments-form input[type='checkbox'],
+.wp-block-post-comments-form input[type='radio'],
+.comment-respond .comment-form input[type='checkbox'],
+.comment-respond .comment-form input[type='radio'] {
 	accent-color: var(--wp--preset--color--brand);
 	width: 16px;
 	height: 16px;
@@ -754,8 +779,8 @@ body,
 }
 
 /* Comment form submit button */
-.wp-block-post-comments-form .form-submit input[type="submit"],
-.comment-respond .comment-form .form-submit input[type="submit"] {
+.wp-block-post-comments-form .form-submit input[type='submit'],
+.comment-respond .comment-form .form-submit input[type='submit'] {
 	font-family: 'Fira Sans', system-ui, sans-serif;
 	font-weight: 500;
 	font-size: clamp(0.8125rem, 0.22vw + 0.75rem, 0.875rem);
@@ -766,17 +791,19 @@ body,
 	background: var(--wp--preset--color--brand);
 	color: #fff;
 	cursor: pointer;
-	transition: background-color 0.15s, transform 0.05s;
+	transition:
+		background-color 0.15s,
+		transform 0.05s;
 	width: auto;
 }
 
-.wp-block-post-comments-form .form-submit input[type="submit"]:hover,
-.comment-respond .comment-form .form-submit input[type="submit"]:hover {
+.wp-block-post-comments-form .form-submit input[type='submit']:hover,
+.comment-respond .comment-form .form-submit input[type='submit']:hover {
 	background: var(--wp--preset--color--brand-hover);
 }
 
-.wp-block-post-comments-form .form-submit input[type="submit"]:active,
-.comment-respond .comment-form .form-submit input[type="submit"]:active {
+.wp-block-post-comments-form .form-submit input[type='submit']:active,
+.comment-respond .comment-form .form-submit input[type='submit']:active {
 	transform: translateY(1px);
 }
 
@@ -848,10 +875,14 @@ body,
 }
 
 .wp-block-post-content sup,
-.entry-content sup { top: -0.5em; }
+.entry-content sup {
+	top: -0.5em;
+}
 
 .wp-block-post-content sub,
-.entry-content sub { bottom: -0.25em; }
+.entry-content sub {
+	bottom: -0.25em;
+}
 
 .wp-block-post-content kbd,
 .entry-content kbd {
@@ -918,4 +949,324 @@ body,
 /* Misc fixes */
 .wp-block-group:empty {
 	display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Lumio — Surface Primitive
+   ───────────────────────────────────────────────────────────────────────────
+   Implements the surface system on top of the theme.json style variation
+   tokens. Reads only --wp--custom--* variables; never hard-codes a value.
+   Drop this into the theme and enqueue from functions.php (or @import from
+   the theme's main stylesheet).
+
+   Tokens it consumes (from any of styles/glassy.json | material.json | soft.json):
+     --wp--custom--page--bg
+     --wp--custom--surface--bg
+     --wp--custom--surface--bg-strong
+     --wp--custom--surface--blur
+     --wp--custom--surface--border
+     --wp--custom--surface--specular
+     --wp--custom--shadow--scale         (multiplier, 0–2)
+     --wp--custom--shadow--elev-0..4
+     --wp--custom--btn--brand-bg
+     --wp--custom--btn--brand-shadow
+     --wp--custom--focus--ring
+     --wp--custom--motion--ease-out
+     --wp--custom--motion--ease-spring
+     --wp--custom--motion--t-fast | t-med | t-slow
+     --wp--custom--radius--default | xs | sm | md | lg | xl | pill
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Body: apply page background from the active variation ───────────────── */
+body {
+	background: var(
+		--wp--custom--page--bg,
+		var(--wp--preset--color--background)
+	);
+	background-attachment: fixed;
+	min-height: 100vh;
+	transition: background-color var(--wp--custom--motion--t-slow, 360ms)
+		var(--wp--custom--motion--ease-out, ease);
+}
+
+/* ── .glass — the base surface primitive ─────────────────────────────────── */
+.glass,
+.wp-block-group.is-style-glass,
+.wp-block-column.is-style-glass {
+	position: relative;
+	background: var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	border: var(--wp--custom--surface--border);
+	border-radius: var(--wp--custom--radius--default);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+	transition:
+		box-shadow var(--wp--custom--motion--t-med, 220ms)
+			var(--wp--custom--motion--ease-out, ease),
+		transform var(--wp--custom--motion--t-med, 220ms)
+			var(--wp--custom--motion--ease-out, ease);
+}
+
+/* Specular sheen layer (top highlight, bottom darkening) */
+.glass::after,
+.wp-block-group.is-style-glass::after,
+.wp-block-column.is-style-glass::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: var(--wp--custom--surface--specular);
+	pointer-events: none;
+}
+
+.glass.is-style-raised,
+.wp-block-group.is-style-glass-raised {
+	border-radius: var(--wp--custom--radius--default);
+	box-shadow: var(--wp--custom--shadow--elev-3);
+}
+
+.glass.is-style-solid,
+.wp-block-group.is-style-glass-solid {
+	border-radius: var(--wp--custom--radius--default);
+	background: var(--wp--custom--surface--bg-strong);
+}
+
+.wp-block-group.is-style-glass,
+.wp-block-group.is-style-glass-raised,
+.wp-block-group.is-style-glass-solid {
+	padding: var(--wp--preset--spacing--6);
+}
+
+/* ── Elevation utility classes (e0–e4) ───────────────────────────────────── */
+.has-elev-0 {
+	box-shadow: var(--wp--custom--shadow--elev-0);
+}
+.has-elev-1 {
+	box-shadow: var(--wp--custom--shadow--elev-1);
+}
+.has-elev-2 {
+	box-shadow: var(--wp--custom--shadow--elev-2);
+}
+.has-elev-3 {
+	box-shadow: var(--wp--custom--shadow--elev-3);
+}
+.has-elev-4 {
+	box-shadow: var(--wp--custom--shadow--elev-4);
+}
+
+/* ── Brand button: gradient fill + specular sheen + 3D edge ──────────────── */
+.wp-block-button__link,
+.wp-element-button {
+	background: var(--wp--custom--btn--brand-bg) !important;
+	color: var(--wp--preset--color--surface) !important;
+	box-shadow: var(--wp--custom--btn--brand-shadow);
+	border: none;
+	border-radius: var(--wp--custom--radius--pill);
+	position: relative;
+	overflow: hidden;
+	transition:
+		transform var(--wp--custom--motion--t-fast, 120ms)
+			var(--wp--custom--motion--ease-out, ease),
+		filter var(--wp--custom--motion--t-fast, 120ms);
+}
+
+/* Top sheen on the button */
+.wp-block-button__link::after,
+.wp-element-button::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: linear-gradient(
+		180deg,
+		rgba(255, 255, 255, 0.25),
+		rgba(255, 255, 255, 0) 50%
+	);
+	pointer-events: none;
+}
+
+.wp-block-button__link:hover,
+.wp-element-button:hover {
+	transform: translateY(-1px);
+	filter: brightness(1.05);
+}
+
+.wp-block-button__link:active,
+.wp-element-button:active {
+	transform: translateY(0);
+	filter: brightness(0.96);
+}
+
+/* Ghost button — opt-in via class */
+.is-style-ghost > .wp-block-button__link,
+.wp-element-button.is-style-ghost {
+	background: var(--wp--custom--surface--bg) !important;
+	color: var(--wp--preset--color--brand-hover) !important;
+	border: var(--wp--custom--surface--border);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+}
+
+/* ── Glowing brand focus ring ────────────────────────────────────────────── */
+:where(
+	a,
+	button,
+	input,
+	textarea,
+	select,
+	.wp-block-button__link,
+	.wp-element-button
+):focus-visible {
+	outline: none;
+	box-shadow:
+		var(--wp--custom--focus--ring),
+		var(--wp--custom--btn--brand-shadow, none);
+}
+
+/* ── Code block — dark gradient + traffic-light chrome ───────────────────── */
+.wp-block-code,
+.wp-block-preformatted {
+	background: linear-gradient(180deg, #1c1c25 0%, #0d0d10 100%);
+	color: var(--wp--preset--color--text-on-dark);
+	border-radius: var(--wp--custom--radius--md);
+	padding: 22px 26px;
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.06),
+		0 16px 32px -12px rgba(15, 18, 60, 0.4),
+		0 0 0 1px rgba(15, 18, 60, 0.18);
+	position: relative;
+}
+.wp-block-code::before,
+.wp-block-preformatted::before {
+	content: '';
+	position: absolute;
+	top: 10px;
+	left: 14px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: #ff5f57;
+	box-shadow:
+		16px 0 0 #febc2e,
+		32px 0 0 #28c840;
+	opacity: 0.7;
+}
+
+/* ── Pullquote — glass surface with gradient quote-mark ──────────────────── */
+.wp-block-pullquote {
+	position: relative;
+	padding: 20px 24px 20px 56px;
+	background: var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	border: var(--wp--custom--surface--border);
+	border-radius: var(--wp--custom--radius--md);
+	border-left-width: 1px;
+}
+.wp-block-pullquote::before {
+	content: '\201C';
+	position: absolute;
+	left: 18px;
+	top: 4px;
+	font-family: var(--wp--preset--font-family--outfit);
+	font-weight: 600;
+	font-size: 56px;
+	line-height: 1;
+	color: var(--wp--preset--color--brand);
+	text-shadow: 0 4px 12px rgba(67, 67, 215, 0.3);
+}
+
+/* ── Post terms — glass pill ─────────────────────────────────────────────── */
+/* .wp-block-post-terms a {
+	display: inline-block;
+	padding: 8px 14px;
+	background: var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	border: var(--wp--custom--surface--border);
+	border-radius: var(--wp--custom--radius--pill);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+	transition:
+		background var(--wp--custom--motion--t-fast, 120ms),
+		border-color var(--wp--custom--motion--t-fast, 120ms),
+		transform var(--wp--custom--motion--t-fast, 120ms);
+}
+.wp-block-post-terms a:hover {
+	transform: translateY(-1px);
+	background: rgba(67, 67, 215, 0.12);
+	border-color: rgba(67, 67, 215, 0.4);
+} */
+
+/* ── Search — pill input with embedded brand button ──────────────────────── */
+/* .wp-block-search__inside-wrapper {
+	background: var(--wp--custom--surface--bg-strong);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	border: var(--wp--custom--surface--border);
+	border-radius: var(--wp--custom--radius--pill);
+	overflow: hidden;
+	padding: 6px 6px 6px 8px;
+	box-shadow: var(--wp--custom--shadow--elev-2);
+}
+.wp-block-search__inside-wrapper:focus-within {
+	box-shadow:
+		var(--wp--custom--focus--ring), var(--wp--custom--shadow--elev-2);
+}
+.wp-block-search__input {
+	border: none !important;
+	background: transparent !important;
+	outline: none;
+}
+.wp-block-search__button {
+	border-radius: var(--wp--custom--radius--pill) !important;
+} */
+
+/* ── Pagination — pill links, gradient current ───────────────────────────── */
+/* .wp-block-query-pagination a,
+.wp-block-query-pagination span {
+	display: inline-grid;
+	place-items: center;
+	min-width: 36px;
+	height: 36px;
+	padding: 0 12px;
+	border-radius: var(--wp--custom--radius--pill);
+	transition:
+		background var(--wp--custom--motion--t-fast, 120ms),
+		transform var(--wp--custom--motion--t-fast, 120ms);
+}
+.wp-block-query-pagination a:hover {
+	background: var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	transform: translateY(-1px);
+}
+.wp-block-query-pagination .current {
+	background: var(--wp--custom--btn--brand-bg);
+	color: var(--wp--preset--color--surface);
+	box-shadow: var(--wp--custom--btn--brand-shadow);
+}
+.wp-block-query-pagination .wp-block-query-pagination-previous,
+.wp-block-query-pagination .wp-block-query-pagination-next {
+	background: var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	border: var(--wp--custom--surface--border);
+	border-radius: var(--wp--custom--radius--sm);
+	width: auto;
+}
+.wp-block-query-pagination .wp-block-query-pagination-previous:hover,
+.wp-block-query-pagination .wp-block-query-pagination-next:hover {
+	background: var(--wp--custom--surface--bg);
+	border-color: var(--wp--preset--color--brand-300);
+	color: var(--wp--preset--color--brand-deep);
+} */
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		transition-duration: 0.001ms !important;
+	}
 }

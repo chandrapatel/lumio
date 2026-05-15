@@ -1,0 +1,90 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Soft Modern",
+	"description": "Pillowy white-on-tinted surfaces with gentle multi-layer shadows. Calm and premium. Indigo brand preserved.",
+	"settings": {
+		"custom": {
+			"_notes": {
+				"intent": "Soft gradient surfaces over a tinted page. No backdrop blur. Multi-layer diffuse shadows with a top highlight inset create a pillowy feel. Buttons use a subtle vertical gradient — less tactile than Glassy, calmer than Material.",
+				"consumed-by": "styles/lumio-surfaces.css — provides .glass primitive and reads these tokens.",
+				"preserves": [
+					"indigo brand palette",
+					"Outfit / Fira Sans / Fira Code",
+					"fluid type",
+					"9-step spacing"
+				]
+			},
+			"radius": {
+				"default": "20px",
+				"xs": "6px",
+				"sm": "10px",
+				"md": "14px",
+				"lg": "20px",
+				"xl": "28px",
+				"pill": "999px"
+			},
+			"page": {
+				"bg": "linear-gradient(180deg, var(--wp--preset--color--background-subtle) 0%, var(--wp--preset--color--background-alt) 100%)"
+			},
+			"surface": {
+				"bg": "linear-gradient(180deg, var(--wp--preset--color--surface) 0%, var(--wp--preset--color--background-subtle) 100%)",
+				"bg-strong": "var(--wp--preset--color--surface)",
+				"blur": "none",
+				"border": "1px solid var(--wp--preset--color--border)",
+				"specular": "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 50%)"
+			},
+			"shadow": {
+				"scale": "1",
+				"elev-0": "0 0 0 1px var(--wp--preset--color--border)",
+				"elev-1": "0 1px 0 rgba(255,255,255,0.9) inset, 0 1px 2px rgba(14, 14, 85, 0.05), 0 0 0 1px var(--wp--preset--color--border)",
+				"elev-2": "0 1px 0 rgba(255,255,255,0.9) inset, 0 -1px 0 rgba(14, 14, 85, 0.04) inset, 0 10px 24px -8px rgba(14, 14, 85, 0.10), 0 2px 4px rgba(14, 14, 85, 0.04)",
+				"elev-3": "0 1px 0 rgba(255,255,255,0.95) inset, 0 24px 56px -16px rgba(14, 14, 85, 0.20), 0 8px 16px -4px rgba(14, 14, 85, 0.10)",
+				"elev-4": "0 2px 0 rgba(255,255,255,0.95) inset, 0 48px 96px -24px rgba(14, 14, 85, 0.30), 0 16px 32px -10px rgba(14, 14, 85, 0.14)"
+			},
+			"btn": {
+				"brand-bg": "linear-gradient(180deg, #5a5aef 0%, #4343d7 100%)",
+				"brand-shadow": "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px -6px rgba(67, 67, 215, 0.35)"
+			},
+			"focus": {
+				"ring": "0 0 0 4px rgba(67, 67, 215, 0.22), 0 0 0 1.5px rgba(67, 67, 215, 0.85), 0 6px 18px -4px rgba(67, 67, 215, 0.35)"
+			},
+			"motion": {
+				"ease-out": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+				"ease-spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+				"t-fast": "120ms",
+				"t-med": "220ms",
+				"t-slow": "360ms"
+			}
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--background-subtle)"
+		},
+		"blocks": {
+			"core/button": {
+				"color": {
+					"background": "var(--wp--custom--btn--brand-bg)",
+					"text": "var(--wp--preset--color--surface)"
+				},
+				"border": {
+					"radius": "var(--wp--custom--radius--pill)"
+				},
+				"spacing": {
+					"padding": {
+						"top": "12px",
+						"right": "22px",
+						"bottom": "12px",
+						"left": "22px"
+					}
+				}
+			},
+			"core/post-terms": {
+				"border": {
+					"radius": "var(--wp--custom--radius--pill)"
+				}
+			}
+		}
+	}
+}
