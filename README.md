@@ -4,7 +4,7 @@ Lumio is a clean WordPress block theme built for writers. Fluid typography, gene
 
 - **Version:** 1.0.0
 - **Author:** Chandra Patel
-- **Requires WordPress:** 6.9+
+- **Requires WordPress:** 7.1+
 - **Requires PHP:** 8.2+
 - **License:** GPL v2 or later
 
@@ -104,6 +104,8 @@ Slugs are usage-based, so swapping in a different palette doesn't make the names
 | `link-visited-deep` | `#2626a0` | Visited link color |
 
 Border radii are exposed via `settings.custom.radius` as `--wp--custom--radius--default` (`10px`), `--wp--custom--radius--sm` (`6px`), and `--wp--custom--radius--xs` (`4px`).
+
+Two more token groups live alongside them: `settings.custom.transition.fast` (`0.15s`, as `--wp--custom--transition--fast`) and `settings.custom.color` for the form error red (`--wp--custom--color--danger`, `--wp--custom--color--danger-soft`). The error colors sit under `custom` rather than the palette so they are not offered as content colors in the editor. Two shadow presets are defined in `settings.shadow.presets`: `--wp--preset--shadow--focus` for form focus rings and `--wp--preset--shadow--card-hover`.
 
 ---
 
