@@ -4,7 +4,7 @@ Lumio is a clean WordPress block theme built for writers. Fluid typography, gene
 
 - **Version:** 1.0.0
 - **Author:** Chandra Patel
-- **Requires WordPress:** 6.9+
+- **Requires WordPress:** 7.1+
 - **Requires PHP:** 8.2+
 - **License:** GPL v2 or later
 
@@ -105,6 +105,8 @@ Slugs are usage-based, so swapping in a different palette doesn't make the names
 
 Border radii are exposed via `settings.custom.radius` as `--wp--custom--radius--default` (`10px`), `--wp--custom--radius--sm` (`6px`), and `--wp--custom--radius--xs` (`4px`).
 
+Two more token groups live alongside them: `settings.custom.transition` (`--wp--custom--transition--fast` at `0.15s` for colour and border changes, `--wp--custom--transition--instant` at `0.05s` for the button active-state nudge) and `settings.custom.color` for the form error red (`--wp--custom--color--danger`, `--wp--custom--color--danger-soft`). The error colors sit under `custom` rather than the palette so they are not offered as content colors in the editor. Two shadow presets are defined in `settings.shadow.presets`: `--wp--preset--shadow--focus` for form focus rings and `--wp--preset--shadow--card-hover`.
+
 ---
 
 ## Layout
@@ -137,8 +139,7 @@ Border radii are exposed via `settings.custom.radius` as `--wp--custom--radius--
 - **`lumio_theme_setup`** — Registers theme supports: wide alignment, editor styles, feed links, title tag, post thumbnails, and HTML5 markup
 - **`lumio_enqueue_styles`** — Enqueues `style.css` with version-based cache busting
 - **`lumio_modify_tag_archive_title`** — Prepends `#` to tag archive titles
-- **`lumio_filter_query_title_block`** — Cleans up the search results heading and wraps the query term in a styleable `<span>`
-- **`lumio_sticky_header_styles`** — Outputs a targeted CSS fix to prevent ancestor `overflow: hidden` from clipping the sticky header
+- **`lumio_filter_query_title_block`** — Rebuilds the search results heading, wrapping the query term in a styleable `<span>`
 
 ---
 
