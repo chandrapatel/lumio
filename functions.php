@@ -122,8 +122,8 @@ add_filter( 'render_block_core/query-title', 'lumio_filter_query_title_block', 1
  *
  * `get_the_terms()` returns terms ordered by name, so an assigned child term can be
  * printed before its assigned parent. Only terms explicitly assigned to the post are
- * considered: a child whose parent is not assigned stays at the top level rather than
- * pulling an unassigned ancestor into the list.
+ * considered: a term nests under its closest assigned ancestor and sits at the top level
+ * when none of its ancestors is assigned, so no unassigned term joins the list.
  *
  * Scoped to the block render: `lumio_sort_block_terms_hierarchically()` detaches itself
  * after the block's single `get_the_terms()` call so other callers keep core ordering
@@ -217,8 +217,7 @@ function lumio_sort_block_terms_hierarchically( $terms, $post_id, $taxonomy ) {
 	$branches = array();
 
 	foreach ( $terms as $term ) {
-		$parent                = isset( $assigned[ $term->parent ] ) ? $term->parent : 0;
-		$branches[ $parent ][] = $term;
+		$branches[ lumio_find_assigned_ancestor( $term, $taxonomy, $assigned ) ][] = $term;
 	}
 
 	return lumio_flatten_term_branches( $branches, 0, array() );
@@ -250,4 +249,35 @@ function lumio_flatten_term_branches( array $branches, int $parent, array $seen 
 	}
 
 	return $ordered;
+}
+
+/**
+ * Find a term's closest ancestor that is also assigned to the post.
+ *
+ * `get_ancestors()` returns IDs nearest-first, so the first assigned hit is the closest
+ * one. Walking past unassigned ancestors keeps a grandchild grouped under an assigned
+ * grandparent when the term between them is not assigned, or was dropped because its
+ * archive is the page being viewed.
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term $term     The term being placed.
+ * @param string  $taxonomy The taxonomy name.
+ * @param array   $assigned The post's assigned term IDs, keyed by ID.
+ *
+ * @return int The closest assigned ancestor's term ID, 0 when the term has none.
+ */
+function lumio_find_assigned_ancestor( $term, string $taxonomy, array $assigned ): int {
+
+	if ( empty( $term->parent ) ) {
+		return 0;
+	}
+
+	foreach ( get_ancestors( $term->term_id, $taxonomy, 'taxonomy' ) as $ancestor_id ) {
+		if ( isset( $assigned[ $ancestor_id ] ) ) {
+			return (int) $ancestor_id;
+		}
+	}
+
+	return 0;
 }
