@@ -278,7 +278,8 @@
 				"xs": "4px"
 			},
 			"transition": {
-				"fast": "0.15s"
+				"fast": "0.15s",
+				"instant": "0.05s"
 			},
 			"color": {
 				"danger": "#9a1c1c",

@@ -72,15 +72,19 @@ body {
 
 /* ── Navigation ── */
 /* theme.json's `-current` custom state colours the <li>, which loses to the anchor's
-   own colour rule, so the current item is highlighted on the link here. */
-.wp-block-navigation .current-menu-item a {
+   own colour rule, so the current item is highlighted on the link here.
+   Scoped to the direct child: `current-menu-item` also lands on a submenu's <li>,
+   so a descendant selector would paint every link inside that submenu as current.
+   Matching the item content rather than `a` also covers a link-less submenu toggle,
+   which core renders as a <button>. */
+.wp-block-navigation .current-menu-item > .wp-block-navigation-item__content {
 	color: var(--wp--preset--color--brand);
 }
 
 /* ── Buttons ── */
 .wp-block-button__link,
 .wp-element-button {
-	transition: background-color var(--wp--custom--transition--fast), color var(--wp--custom--transition--fast), border-color var(--wp--custom--transition--fast), transform 0.05s;
+	transition: background-color var(--wp--custom--transition--fast), color var(--wp--custom--transition--fast), border-color var(--wp--custom--transition--fast), transform var(--wp--custom--transition--instant);
 }
 
 .wp-block-button__link:active,
