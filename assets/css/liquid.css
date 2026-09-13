@@ -1,0 +1,937 @@
+/*
+ * Lumio · Liquid Glass
+ *
+ * Loaded only while the "Liquid Glass" style variation is active — see
+ * lumio_is_liquid_style() in functions.php. Tokens come from styles/liquid.json
+ * (settings.custom), so nothing here hard-codes a colour, radius or duration
+ * that the variation already models.
+ *
+ * Two conventions run through this file:
+ *
+ * 1. `:root` prefix. theme.json compiles to `:root :where(...)` selectors, which
+ *    score one class point. A rule that only repeats the block's own class ties
+ *    with it and then depends on stylesheet order — not something to rely on
+ *    inside the editor iframe, where this file and the global stylesheet are
+ *    injected by different paths. The `:root` prefix adds the point that settles
+ *    it without reaching for `!important`.
+ *
+ * 2. `!important` appears only where a template writes the property as an inline
+ *    style via a block attribute (the 1px rules and a couple of radii). No
+ *    stylesheet can outrank an inline declaration any other way. Each one is
+ *    commented with the template it answers.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════
+   PALETTE ADJUSTMENT
+
+   One preset needs a different value on glass than it has on the flat
+   default background: text-subtle (#85858d) reaches about 3.4:1 against a
+   translucent surface, short of 4.5:1 at the 12px it is used at. Every
+   other palette colour is inherited from theme.json untouched.
+
+   This lives here rather than in styles/liquid.json because a variation
+   that declares settings.color.palette replaces the theme's array
+   wholesale — WP_Theme_JSON::merge() overwrites preset arrays instead of
+   merging them. Changing one colour there would mean restating all
+   twenty-one, and the copy would drift the day theme.json changed.
+
+   The trade-off is that the editor's colour picker still shows the
+   theme's swatch for this one slug, which is already true of the dark
+   palette below.
+   ═══════════════════════════════════════════════════════════════════ */
+:root:root {
+	--wp--preset--color--text-subtle: #6a6a74;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SPECULAR SHEEN
+
+   The bright highlight down the top of every glass surface. Without it a
+   translucent panel reads as a flat tinted box rather than as glass —
+   backdrop blur alone cannot carry the effect, because a blurred smooth
+   gradient looks identical to the gradient.
+
+   `surface.specular` is declared in styles/liquid.json, but a token added
+   to a variation after a site has applied it never arrives: applying a
+   variation copies its settings into that site's own global styles, and
+   the file is not read again. The literal fallback keeps the sheen working
+   on sites running an earlier snapshot, while a fresh install takes the
+   token. Anything referencing this alias needs no fallback of its own.
+   ═══════════════════════════════════════════════════════════════════ */
+:root:root {
+	--lumio-sheen: var(--wp--custom--surface--specular,
+		linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 42%));
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DARK MODE TOKENS
+
+   theme.json cannot scope tokens to a media query, so the dark palette
+   lives here. Every preset below is referenced by name from theme.json,
+   style.css and the templates' inline styles, so redefining the variable
+   re-skins all three at once.
+
+   `:root:root` outranks the `:root` block that WordPress prints for
+   settings.custom, whichever order the two stylesheets land in.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+	:root:root {
+		color-scheme: dark;
+
+		--wp--preset--color--text: #f2f2f7;
+		--wp--preset--color--text-body: #dcdce6;
+		--wp--preset--color--text-secondary: #b9b9c8;
+		--wp--preset--color--text-muted: #9797a8;
+		--wp--preset--color--text-subtle: #8d8d9f;
+
+		--wp--preset--color--background: #0b0b14;
+		--wp--preset--color--background-alt: #14141f;
+		--wp--preset--color--background-subtle: #101019;
+		--wp--preset--color--surface: #16161f;
+
+		--wp--preset--color--border: rgba(255, 255, 255, 0.12);
+		--wp--preset--color--border-strong: rgba(255, 255, 255, 0.2);
+
+		--wp--preset--color--brand-soft: rgba(110, 110, 242, 0.14);
+		--wp--preset--color--brand-200: #3a3a7a;
+		--wp--preset--color--brand-300: #6b6bd8;
+		--wp--preset--color--brand: #8181f6;
+		--wp--preset--color--brand-hover: #a6a6ff;
+		--wp--preset--color--brand-deep: #d3d3ff;
+
+		--wp--preset--color--link-visited: #a9a9ff;
+		--wp--preset--color--link-visited-deep: #c9c9ff;
+
+		--wp--custom--page--bg:
+			radial-gradient(1300px 900px at 6% -12%, #23235c 0%, transparent 58%),
+			radial-gradient(1100px 800px at 106% 2%, #14355e 0%, transparent 60%),
+			radial-gradient(1000px 700px at 54% 114%, #3d1f47 0%, transparent 58%),
+			linear-gradient(180deg, #0b0b14 0%, #0e0e1a 100%);
+
+		--wp--custom--surface--bg: rgba(120, 120, 165, 0.1);
+		--wp--custom--surface--bg-strong: rgba(132, 132, 180, 0.16);
+		--wp--custom--surface--bg-quiet: rgba(120, 120, 165, 0.07);
+		--wp--custom--surface--rim:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 34%,
+				rgba(255, 255, 255, 0.04) 62%, rgba(255, 255, 255, 0.22) 100%);
+		--wp--custom--surface--hairline: rgba(166, 166, 255, 0.2);
+		--wp--custom--surface--tint: rgba(166, 166, 255, 0.16);
+		--wp--custom--surface--glare: rgba(255, 255, 255, 0.16);
+
+		/* Smoked glass takes a far quieter sheen than frosted; the light value
+		   would read as a grey wash across the top of every card. */
+		--lumio-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 42%);
+
+		--wp--custom--shadow--elev-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 10px -4px rgba(0, 0, 0, 0.5);
+		--wp--custom--shadow--elev-2: 0 2px 8px -2px rgba(0, 0, 0, 0.45), 0 12px 32px -14px rgba(0, 0, 0, 0.6);
+		--wp--custom--shadow--elev-3: 0 4px 14px -4px rgba(0, 0, 0, 0.5), 0 28px 60px -22px rgba(0, 0, 0, 0.7);
+		--wp--custom--shadow--elev-4: 0 8px 22px -8px rgba(0, 0, 0, 0.55), 0 56px 100px -34px rgba(0, 0, 0, 0.8);
+
+		--wp--custom--btn--brand-bg: linear-gradient(180deg, #6f6ff0 0%, #5555e2 52%, #4646cc 100%);
+		--wp--custom--focus--ring: 0 0 0 4px rgba(129, 129, 246, 0.28), 0 0 0 1.5px rgba(166, 166, 255, 0.9);
+
+		--wp--custom--color--danger: #ff9c9c;
+		--wp--custom--color--danger-soft: rgba(255, 120, 120, 0.16);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE CANVAS
+
+   Glass only reads as glass with something behind it, so the flat
+   background colour becomes a soft colour field. `:root body` outranks
+   the `:root :where(body)` rule theme.json prints for styles.color.
+   ═══════════════════════════════════════════════════════════════════ */
+:root body {
+	background: var(--wp--custom--page--bg);
+	background-attachment: fixed;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SURFACE PRIMITIVES
+
+   The lens rim is the bright top edge and dim bottom edge of a real
+   glass slab: a 1px gradient ring drawn with a mask so it follows the
+   element's own radius. Applied to the surfaces large enough to read it.
+   ═══════════════════════════════════════════════════════════════════ */
+.lumio-header-bar,
+.lumio-footer-bar,
+.lumio-post-row,
+.lumio-archive-row,
+.lumio-author-bio,
+.lumio-recent-card,
+:root .wp-block-table,
+:root .wp-block-quote,
+:root .wp-block-pullquote {
+	position: relative;
+}
+
+.lumio-header-bar::before,
+.lumio-footer-bar::before,
+.lumio-post-row::before,
+.lumio-archive-row::before,
+.lumio-author-bio::before,
+.lumio-recent-card::before,
+:root .wp-block-table::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	padding: 1px;
+	background: var(--wp--custom--surface--rim);
+
+	/* Prefixed pair first, unprefixed second — the order matters and is not
+	   stylistic. `mask` and `-webkit-mask` are both shorthands that reset the
+	   composite value, so whichever comes last wins. Firefox aliases
+	   `-webkit-mask` to `mask` but does not support `-webkit-mask-composite`,
+	   so putting the prefixed shorthand last leaves composite at its initial
+	   `add` there: the two layers union instead of subtracting and the rim
+	   floods the whole element instead of drawing a 1px ring. */
+	-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	mask-composite: exclude;
+	pointer-events: none;
+	z-index: 2;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STICKY HEADER
+
+   The default style's header is a bordered full-width strip. Liquid turns
+   the inner flex group into a floating glass pill and makes the wrapper
+   sticky and transparent, so page content blurs beneath it as it scrolls.
+   ═══════════════════════════════════════════════════════════════════ */
+:root .site-header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	background: transparent;
+
+	/* parts/header.html sets the bottom border and both block paddings inline.
+	   Physical longhands here, not `padding-block`: the override has to name the
+	   same properties the inline style does, and for block-direction padding the
+	   logical form buys nothing in RTL anyway. */
+	border-bottom-style: none !important;
+	padding-top: var(--wp--custom--layout--header-gap) !important;
+	padding-bottom: 0 !important;
+}
+
+.site-header .wp-block-group.lumio-header-bar {
+	max-width: var(--wp--style--global--wide-size);
+	margin-inline: auto;
+	min-height: var(--wp--custom--layout--header-height);
+	gap: 16px;
+	padding: 8px 12px 8px 22px;
+	border-radius: var(--wp--custom--radius--pill);
+	background: transparent;
+}
+
+/*
+ * The header's glass is painted by a pseudo-element instead of on the bar itself.
+ * backdrop-filter makes an element the containing block for fixed-position
+ * descendants, and core's mobile navigation overlay is `position: fixed` inside
+ * this bar — blurring the bar directly would shrink that full-screen overlay to
+ * the size of the header. A pseudo-element has no descendants to trap.
+ *
+ * z-index -1 keeps it behind the brand and nav; .site-header is already a stacking
+ * context (sticky plus z-index), so it cannot slide behind the page content.
+ */
+.lumio-header-bar::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	border-radius: inherit;
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+}
+
+.lumio-header-bar .wp-block-site-logo img {
+	border-radius: 9px;
+	box-shadow: var(--wp--custom--shadow--elev-1);
+}
+
+/* The header's nav blockGap is a preset the airier scale grew; pills want it tight. */
+.lumio-header-bar .wp-block-navigation,
+.lumio-header-bar .wp-block-navigation__container {
+	gap: 2px;
+}
+
+.lumio-header-bar .wp-block-navigation-item__content {
+	padding: 9px 16px;
+	border-radius: var(--wp--custom--radius--pill);
+	transition: background var(--wp--custom--motion--t-fast) var(--wp--custom--motion--ease-out),
+		color var(--wp--custom--motion--t-fast);
+}
+
+.lumio-header-bar .wp-block-navigation-item__content:hover {
+	background: var(--wp--custom--surface--bg-strong);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+}
+
+.lumio-header-bar .wp-block-navigation .current-menu-item > .wp-block-navigation-item__content {
+	background: var(--wp--custom--surface--bg-strong);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+	color: var(--wp--preset--color--brand-deep);
+}
+
+/* ── Sliding pill ─────────────────────────────────────────────────
+   liquid.js appends the pill and marks the nav `lumio-has-ink`. Position
+   animates as a transform; the pill is out of flow, so the width change
+   reflows nothing around it. */
+.lumio-header-bar .wp-block-navigation {
+	position: relative;
+}
+
+.lumio-nav-ink {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+	width: var(--lumio-ink-w, 0);
+	height: var(--lumio-ink-h, 38px);
+	transform: translate3d(var(--lumio-ink-x, 0), var(--lumio-ink-y, 0), 0);
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--custom--surface--bg-strong);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* Transitions wait for the first measurement, so the pill does not slide in
+   from the corner on load. */
+.lumio-nav-ink.is-ready {
+	transition: transform var(--wp--custom--motion--t-med) var(--wp--custom--motion--ease-spring),
+		width var(--wp--custom--motion--t-med) var(--wp--custom--motion--ease-spring),
+		opacity var(--wp--custom--motion--t-fast);
+}
+
+.lumio-header-bar .wp-block-navigation.lumio-has-ink .wp-block-navigation__responsive-container:not(.is-menu-open) .wp-block-navigation__container > li > .wp-block-navigation-item__content {
+	position: relative;
+	z-index: 1;
+}
+
+/* Top-level items carry no fill of their own once the pill is live — it would
+   sit underneath as a second highlight. Scoped to direct children so submenu
+   links keep their hover, and released inside the mobile overlay, which the
+   pill does not follow. */
+.lumio-header-bar .wp-block-navigation.lumio-has-ink .wp-block-navigation__responsive-container:not(.is-menu-open) .wp-block-navigation__container > li > .wp-block-navigation-item__content:hover,
+.lumio-header-bar .wp-block-navigation.lumio-has-ink .wp-block-navigation__responsive-container:not(.is-menu-open) .wp-block-navigation__container > li.current-menu-item > .wp-block-navigation-item__content {
+	background: transparent;
+	box-shadow: none;
+}
+
+/* Hamburger and the overlay it opens. */
+.lumio-header-bar .wp-block-navigation__responsive-container-open {
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--custom--surface--bg-strong);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+	color: var(--wp--preset--color--text-secondary);
+}
+
+.wp-block-navigation__responsive-container.is-menu-open {
+	background-color: var(--wp--custom--surface--bg-strong);
+	backdrop-filter: var(--wp--custom--surface--blur-heavy);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur-heavy);
+	padding-block: clamp(40px, 8vh, 80px);
+}
+
+.wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content {
+	padding: 10px 18px;
+	border-radius: var(--wp--custom--radius--pill);
+}
+
+.wp-block-navigation__responsive-container-close {
+	width: 40px;
+	height: 40px;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--custom--surface--bg-strong);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+}
+
+/* Submenus become their own floating slab. */
+:root .wp-block-navigation .wp-block-navigation__submenu-container {
+	padding: 8px;
+	border: none;
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--custom--surface--bg-strong);
+	backdrop-filter: var(--wp--custom--surface--blur-heavy);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur-heavy);
+	box-shadow: var(--wp--custom--shadow--elev-3);
+}
+
+:root .wp-block-navigation .wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+	border-radius: var(--wp--custom--radius--sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════════ */
+:root .site-footer {
+	/* parts/footer.html sets the top border inline. */
+	border-top-style: none !important;
+}
+
+.site-footer .wp-block-group.lumio-footer-bar {
+	gap: 24px;
+	padding: 28px clamp(24px, 5vw, 40px);
+	border-radius: var(--wp--custom--radius--xl);
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   POST LIST ROWS → GLASS CARDS
+
+   index.html, search.html, archive.html, category.html, tag.html and
+   author.html each render their post-template row as a group with a 1px
+   bottom border and vertical padding only. Liquid lifts each row onto its
+   own slab; the horizontal padding is free to come from CSS because the
+   templates never set it.
+   ═══════════════════════════════════════════════════════════════════ */
+.lumio-post-row,
+.lumio-archive-row {
+	/* The row templates set border-bottom-width inline. */
+	border-bottom-style: none !important;
+
+	padding-inline: var(--wp--custom--space--card);
+	margin-block-end: 20px;
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+	transition: transform var(--wp--custom--motion--t-med) var(--wp--custom--motion--ease-spring),
+		box-shadow var(--wp--custom--motion--t-med) var(--wp--custom--motion--ease-out),
+		background var(--wp--custom--motion--t-med);
+}
+
+.lumio-archive-row {
+	padding-inline: clamp(22px, 2.4vw, 32px);
+	margin-block-end: 10px;
+}
+
+/* Matches the prototype's `.post-card:hover` exactly. The visible weight of this
+   state is the pointer specular below, not these three properties: on a near-white
+   page the 0.46 → 0.68 shift in white translucency is barely a 2% change. Under
+   reduced motion both the lift and the specular are dropped, leaving only that
+   quiet fill and the deeper shadow. */
+.lumio-post-row:hover,
+.lumio-archive-row:hover,
+.lumio-post-row:focus-within,
+.lumio-archive-row:focus-within {
+	transform: translateY(-3px);
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg-strong);
+	box-shadow: var(--wp--custom--shadow--elev-3);
+}
+
+/* ── Pointer specular ─────────────────────────────────────────────
+   liquid.js writes the pointer's position into --lumio-mx / --lumio-my as it
+   crosses a card. Without the script the custom properties keep their
+   fallbacks and the highlight stays at opacity 0, so nothing shows.
+
+   z-index 1 is load-bearing and matches the prototype's `.lq-lift::after`.
+   The card's backdrop-filter makes it a stacking context, and its children
+   below are positioned at z-index 1; at z-index 0 this layer painted beneath
+   them and the glare — the largest part of the whole hover — was buried under
+   the card's own content. Matching their z-index puts it above them instead,
+   because a pseudo-element comes after its siblings in tree order. */
+.lumio-post-row::after,
+.lumio-archive-row::after,
+.lumio-recent-card::after,
+.lumio-author-bio::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+	background: radial-gradient(260px circle at var(--lumio-mx, 50%) var(--lumio-my, 0%),
+		var(--wp--custom--surface--glare), transparent 62%);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--wp--custom--motion--t-med) var(--wp--custom--motion--ease-out);
+}
+
+.lumio-post-row:hover::after,
+.lumio-archive-row:hover::after,
+.lumio-recent-card:hover::after,
+.lumio-author-bio:hover::after {
+	opacity: 1;
+}
+
+/* Lift the card's own content out of the background layer, as the prototype
+   does with `.post-card > *`. The glare still washes over the top of it —
+   that is the intended look, not an accident of ordering. */
+.lumio-post-row > *,
+.lumio-archive-row > *,
+.lumio-recent-card > *,
+.lumio-author-bio > * {
+	position: relative;
+	z-index: 1;
+}
+
+@media (hover: none) {
+	.lumio-post-row::after,
+	.lumio-archive-row::after,
+	.lumio-recent-card::after,
+	.lumio-author-bio::after {
+		display: none;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE HEADERS
+
+   The archive, search, author and page templates open with a group that
+   rules off the heading area. Glass needs no rule, so the border goes and
+   the space stays.
+   ═══════════════════════════════════════════════════════════════════ */
+.lumio-page-header {
+	/* Set inline by every template that uses this class. */
+	border-bottom-style: none !important;
+	border-bottom-width: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   POST TERMS
+
+   theme.json already models these as bordered pills; Liquid fills them
+   with glass and floats them on hover.
+   ═══════════════════════════════════════════════════════════════════ */
+.wp-block-post-terms a {
+	background: var(--wp--custom--surface--bg-strong);
+	backdrop-filter: saturate(180%) blur(14px);
+	-webkit-backdrop-filter: saturate(180%) blur(14px);
+	border-color: var(--wp--custom--surface--hairline);
+	padding: 6px 14px;
+	transition: transform var(--wp--custom--motion--t-fast) var(--wp--custom--motion--ease-spring),
+		background var(--wp--custom--motion--t-fast), border-color var(--wp--custom--motion--t-fast);
+}
+
+.wp-block-post-terms a:hover {
+	background: var(--wp--custom--surface--tint);
+	transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FEATURED IMAGE
+   ═══════════════════════════════════════════════════════════════════ */
+:root .wp-block-post-featured-image {
+	/* Every template sets a 10px or 16px radius inline. */
+	border-radius: var(--wp--custom--radius--lg) !important;
+
+	overflow: hidden;
+	box-shadow: var(--wp--custom--shadow--elev-2);
+}
+
+:root .wp-block-post-featured-image img {
+	border-radius: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BUTTONS
+
+   theme.json carries the pill radius, padding and a flat brand fallback.
+   The vertical gradient and the inset rim that make a button look moulded
+   cannot be expressed there, so they live here.
+   ═══════════════════════════════════════════════════════════════════ */
+.wp-block-button .wp-block-button__link,
+.wp-block-search .wp-block-search__button,
+.wp-block-post-comments-form .form-submit :is(input[type="submit"], button) {
+	background: var(--wp--custom--btn--brand-bg);
+	border: none;
+	color: #fff;
+	box-shadow: var(--wp--custom--btn--brand-shadow);
+	transition: filter var(--wp--custom--motion--t-fast),
+		transform var(--wp--custom--motion--t-fast) var(--wp--custom--motion--ease-spring);
+}
+
+.wp-block-button .wp-block-button__link:hover,
+.wp-block-search .wp-block-search__button:hover,
+.wp-block-post-comments-form .form-submit :is(input[type="submit"], button):hover {
+	background: var(--wp--custom--btn--brand-bg);
+	filter: brightness(1.08);
+}
+
+.wp-block-button .wp-block-button__link:active,
+.wp-block-search .wp-block-search__button:active,
+.wp-block-post-comments-form .form-submit :is(input[type="submit"], button):active {
+	transform: scale(0.97);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link {
+	background: var(--wp--custom--surface--bg-strong);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	border: none;
+	color: var(--wp--preset--color--brand-hover);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FORM FIELDS
+
+   Field radius and padding are in the variation; the glass fill and the
+   translucent hairline are here. `:root` mirrors the selector shape
+   style.css already uses for these elements.
+   ═══════════════════════════════════════════════════════════════════ */
+:root input:where([type="email"], [type="number"], [type="password"], [type="search"], [type="text"], [type="tel"], [type="url"]),
+:root textarea,
+:root select {
+	background: var(--wp--custom--surface--bg-strong);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	border-color: var(--wp--custom--surface--hairline);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+}
+
+:root input:where([type="email"], [type="number"], [type="password"], [type="search"], [type="text"], [type="tel"], [type="url"]):focus,
+:root textarea:focus,
+:root select:focus {
+	border-color: transparent;
+	box-shadow: var(--wp--custom--focus--ring);
+}
+
+.wp-block-search .wp-block-search__input {
+	border-radius: var(--wp--custom--radius--pill);
+	padding-inline: 22px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PROSE
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Quote and pullquote sit on glass, keeping theme.json's brand edge. */
+:root .wp-block-quote,
+:root .wp-block-pullquote {
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	border-radius: var(--wp--custom--radius--lg);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+	padding: 28px 32px 28px 36px;
+}
+
+/* Code keeps its own dark slab in both colour schemes: theme.json points its
+   background at the `text` preset, which the dark palette inverts to near-white. */
+:root .wp-block-code,
+:root .wp-block-preformatted {
+	background: var(--wp--custom--code--bg);
+	color: var(--wp--preset--color--text-on-dark);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), var(--wp--custom--shadow--elev-3);
+}
+
+:root .wp-block-post-content code {
+	background: var(--wp--custom--surface--tint);
+	border-radius: var(--wp--custom--radius--xs);
+	padding: 2px 7px;
+}
+
+:root .wp-block-post-content :is(.wp-block-code, .wp-block-preformatted) code {
+	background: none;
+	padding: 0;
+}
+
+/* Table: glass slab, translucent rules. */
+:root .wp-block-table {
+	border: none;
+	border-radius: var(--wp--custom--radius--xl);
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+}
+
+:root .wp-block-table :is(thead th, tfoot td, tfoot th) {
+	background: var(--wp--custom--surface--bg-quiet);
+	border-color: var(--wp--custom--surface--hairline);
+}
+
+:root .wp-block-table :is(td, tbody th) {
+	border-bottom-color: var(--wp--custom--surface--hairline);
+}
+
+:root .wp-block-table.is-style-stripes tbody tr:nth-child(odd) {
+	background-color: var(--wp--custom--surface--bg-quiet);
+}
+
+:root .wp-block-table.is-style-stripes tbody tr:nth-child(even) {
+	background-color: transparent;
+}
+
+:root .wp-block-table figcaption {
+	background: var(--wp--custom--surface--bg-quiet);
+	border-top-color: var(--wp--custom--surface--hairline);
+}
+
+/* Separator reads as a light break rather than a line. */
+:root .wp-block-separator:not(.is-style-dots) {
+	border: none;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, var(--wp--custom--surface--hairline) 18%,
+		var(--wp--custom--surface--hairline) 82%, transparent);
+}
+
+:root .wp-block-post-content kbd {
+	background: var(--wp--custom--surface--bg-strong);
+	border-color: var(--wp--custom--surface--hairline);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGINATION AND POST NAVIGATION
+   ═══════════════════════════════════════════════════════════════════ */
+:root .wp-block-query-pagination-numbers .page-numbers {
+	min-width: 42px;
+	height: 42px;
+	border: none;
+	border-radius: var(--wp--custom--radius--pill);
+	transition: transform var(--wp--custom--motion--t-fast) var(--wp--custom--motion--ease-spring),
+		background var(--wp--custom--motion--t-fast);
+}
+
+:root .wp-block-query-pagination-numbers a.page-numbers:hover {
+	background: var(--wp--custom--surface--bg-strong);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+	transform: translateY(-2px);
+}
+
+:root .wp-block-query-pagination-numbers .page-numbers.current {
+	background: var(--wp--custom--btn--brand-bg);
+	border: none;
+	color: #fff;
+	box-shadow: var(--wp--custom--btn--brand-shadow);
+}
+
+:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next),
+:root .wp-block-post-navigation-link a {
+	display: inline-flex;
+	align-items: center;
+	padding: 10px 20px;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+	transition: background var(--wp--custom--motion--t-fast),
+		transform var(--wp--custom--motion--t-fast) var(--wp--custom--motion--ease-spring);
+}
+
+:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next):hover,
+:root .wp-block-post-navigation-link a:hover {
+	background: var(--wp--custom--surface--bg-strong);
+	transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   AUTHOR AND COMMENTS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* single.html gives this group an inline border, radius and surface fill. */
+:root .lumio-author-bio {
+	border-style: none !important;
+	border-radius: var(--wp--custom--radius--xl) !important;
+
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+	padding: var(--wp--custom--space--card);
+}
+
+:root .wp-block-avatar img,
+:root .wp-block-post-author__avatar img {
+	box-shadow: 0 6px 16px -6px rgba(67, 67, 215, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+:root .wp-block-comment-template > li {
+	padding: var(--wp--preset--spacing--5) clamp(22px, 2.4vw, 32px);
+	margin-block-end: 16px;
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+}
+
+:root .wp-block-comment-template > li > ol {
+	margin-block-start: var(--wp--preset--spacing--5);
+}
+
+:root .wp-block-comments-pagination a {
+	padding: 8px 16px;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--custom--surface--bg);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+}
+
+:root .wp-block-post-comments-form {
+	padding: var(--wp--custom--space--card);
+	border-radius: var(--wp--custom--radius--xl);
+	background: var(--wp--custom--surface--bg-quiet);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   404
+   ═══════════════════════════════════════════════════════════════════ */
+.lumio-error-section {
+	/* Set inline in templates/404.html. */
+	border-bottom-style: none !important;
+}
+
+:root .lumio-error-num {
+	-webkit-text-stroke: 2px var(--wp--custom--surface--hairline);
+}
+
+/* 404.html gives the recent-post cards an inline border, radius and fill. */
+:root .lumio-recent-card {
+	border-style: none !important;
+	border-radius: var(--wp--custom--radius--lg) !important;
+
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg);
+	backdrop-filter: var(--wp--custom--surface--blur);
+	-webkit-backdrop-filter: var(--wp--custom--surface--blur);
+	box-shadow: var(--wp--custom--shadow--elev-2);
+	transition: transform var(--wp--custom--motion--t-med) var(--wp--custom--motion--ease-spring),
+		box-shadow var(--wp--custom--motion--t-med) var(--wp--custom--motion--ease-out),
+		background var(--wp--custom--motion--t-med);
+}
+
+:root .lumio-recent-card:hover,
+:root .lumio-recent-card:focus-within {
+	background: var(--lumio-sheen), var(--wp--custom--surface--bg-strong);
+	box-shadow: var(--wp--custom--shadow--elev-3);
+	transform: translateY(-3px);
+}
+
+/* The card's featured image is squared off at the bottom to meet the body. */
+:root .lumio-recent-card .wp-block-post-featured-image {
+	border-radius: var(--wp--custom--radius--lg) var(--wp--custom--radius--lg) 0 0 !important;
+	box-shadow: none;
+}
+
+:root .lumio-search-query {
+	border-bottom-color: var(--wp--preset--color--brand-300);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FOCUS
+
+   style.css draws a brand-soft outline, which all but disappears against
+   glass. Liquid keeps an outline — it is the part that survives forced-
+   colours mode — and adds the ring glow behind it.
+   ═══════════════════════════════════════════════════════════════════ */
+:root :focus-visible {
+	outline-color: var(--wp--preset--color--brand-300);
+	box-shadow: var(--wp--custom--focus--ring);
+	border-radius: var(--wp--custom--radius--xs);
+}
+
+/* style.css rounds every focused element to the xs radius so the outline follows a
+   corner. Liquid is full of pill-shaped controls, which that would visibly square
+   off mid-focus, so they keep their own radius. */
+:root :is(
+	.wp-block-button__link,
+	.wp-block-search__button,
+	.wp-block-search__input,
+	.wp-block-post-terms a,
+	.wp-block-navigation-item__content,
+	.wp-block-query-pagination-numbers .page-numbers,
+	.wp-block-query-pagination-previous,
+	.wp-block-query-pagination-next,
+	.wp-block-post-navigation-link a,
+	.wp-block-navigation__responsive-container-open,
+	.wp-block-navigation__responsive-container-close
+):focus-visible {
+	border-radius: var(--wp--custom--radius--pill);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+
+   style.css already collapses every duration. These surfaces also move on
+   hover, so drop the displacement itself rather than making it instant.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+	.lumio-post-row:hover,
+	.lumio-archive-row:hover,
+	.lumio-post-row:focus-within,
+	.lumio-archive-row:focus-within,
+	:root .lumio-recent-card:hover,
+	:root .wp-block-post-terms a:hover,
+	:root .wp-block-query-pagination-numbers a.page-numbers:hover,
+	:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next):hover,
+	:root .wp-block-post-navigation-link a:hover,
+	.wp-block-button .wp-block-button__link:active,
+	.wp-block-search .wp-block-search__button:active {
+		transform: none;
+	}
+
+	/* The specular highlight tracks the pointer, so it is motion by definition. */
+	.lumio-post-row::after,
+	.lumio-archive-row::after,
+	.lumio-recent-card::after,
+	.lumio-author-bio::after {
+		display: none;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   NARROW SCREENS
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 781px) {
+	:root .site-header {
+		padding-top: 10px !important;
+		padding-bottom: 0 !important;
+	}
+
+	.site-header .wp-block-group.lumio-header-bar {
+		min-height: 58px;
+		gap: 10px;
+		padding: 8px 10px 8px 18px;
+		border-radius: 30px;
+	}
+
+	.lumio-post-row,
+	.lumio-archive-row {
+		padding-inline: 24px;
+	}
+
+	:root .wp-block-quote,
+	:root .wp-block-pullquote {
+		padding: 22px 24px 22px 28px;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BACKDROP-FILTER FALLBACK
+
+   Without backdrop blur the translucent fills turn muddy, so opaque-up
+   every glass surface. Chromium, Safari and Firefox all support the
+   property; this covers older builds and blur-disabled environments.
+   ═══════════════════════════════════════════════════════════════════ */
+@supports not (backdrop-filter: blur(1px)) {
+	:root:root {
+		--wp--custom--surface--bg: rgba(255, 255, 255, 0.88);
+		--wp--custom--surface--bg-strong: rgba(255, 255, 255, 0.96);
+		--wp--custom--surface--bg-quiet: rgba(255, 255, 255, 0.78);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root:root {
+			--wp--custom--surface--bg: #171724;
+			--wp--custom--surface--bg-strong: #1e1e2d;
+			--wp--custom--surface--bg-quiet: #13131e;
+		}
+	}
+}
