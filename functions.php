@@ -54,6 +54,132 @@ function lumio_enqueue_styles(): void {
 add_action( 'wp_enqueue_scripts', 'lumio_enqueue_styles' );
 
 /**
+ * Check whether the Liquid Glass style variation is the active global style.
+ *
+ * WordPress records no name for the variation a site has selected: applying one in
+ * the Site Editor merges its contents into the user's global styles and discards the
+ * label. `styles/liquid.json` therefore carries a `styleSlug` setting whose presence
+ * in the merged settings is the marker, which also survives any later customisation
+ * the user makes on top of the variation.
+ *
+ * `wp_get_global_settings()` returns the whole settings array when the requested path
+ * is absent, so the value has to be type-checked rather than merely compared.
+ *
+ * @since 1.1.0
+ *
+ * @return bool True when the Liquid Glass variation is active.
+ */
+function lumio_is_liquid_style(): bool {
+
+	$slug = wp_get_global_settings( array( 'custom', 'styleSlug' ) );
+
+	return is_string( $slug ) && 'liquid' === $slug;
+}
+
+/**
+ * Build a cache-busting version string for a theme asset.
+ *
+ * The theme version alone does not change when a stylesheet is edited, so browsers
+ * keep serving the copy they already have. Appending the file's modification time
+ * means an edit always invalidates the cached copy, and the theme version still
+ * identifies the release. Falls back to the theme version if the file is missing.
+ *
+ * @since 1.1.0
+ *
+ * @param string $relative_path Path to the asset, relative to the theme root.
+ *
+ * @return string Version string for wp_enqueue_style()/wp_enqueue_script().
+ */
+function lumio_asset_version( string $relative_path ): string {
+
+	$version = (string) wp_get_theme()->get( 'Version' );
+	$file    = get_theme_file_path( $relative_path );
+	$mtime   = file_exists( $file ) ? filemtime( $file ) : false;
+
+	return $mtime ? $version . '.' . $mtime : $version;
+}
+
+/**
+ * Enqueue the Liquid Glass assets on the front end.
+ *
+ * The stylesheet declares no dependency on `lumio-style`, deliberately. A missing
+ * dependency makes WP_Dependencies skip the item silently — nothing is printed and
+ * no error is raised — so a plugin that dequeues or renames the theme's handle would
+ * take this file down with it. Running at priority 20 while the theme's own styles
+ * enqueue at the default 10 puts this later in the queue, and styles without
+ * dependencies print in queue order, so the cascade still resolves correctly.
+ *
+ * The script only enhances what the stylesheet already renders — the sliding
+ * navigation pill and the pointer-tracked highlight — so it is deferred and left
+ * out of the editor, where neither behaviour applies.
+ *
+ * @since 1.1.0
+ *
+ * @return void
+ */
+function lumio_enqueue_liquid_assets(): void {
+
+	if ( ! lumio_is_liquid_style() ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'lumio-liquid',
+		get_theme_file_uri( 'assets/css/liquid.css' ),
+		array(),
+		lumio_asset_version( 'assets/css/liquid.css' )
+	);
+
+	wp_enqueue_script(
+		'lumio-liquid',
+		get_theme_file_uri( 'assets/js/liquid.js' ),
+		array(),
+		lumio_asset_version( 'assets/js/liquid.js' ),
+		array(
+			'in_footer' => true,
+			'strategy'  => 'defer',
+		)
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lumio_enqueue_liquid_assets', 20 );
+
+/**
+ * Enqueue the Liquid Glass stylesheet inside the block editor canvas.
+ *
+ * `enqueue_block_assets` reaches the editor's iframe, and unlike `add_editor_style()`
+ * it hands the CSS over untouched — core rewrites `:root` and `body` selectors in
+ * theme editor styles, which this file depends on for its token overrides.
+ *
+ * The front end is served by lumio_enqueue_liquid_assets() instead, so this run is
+ * limited to block editor screens: the hook also fires on plain admin pages, where
+ * the page background gradient would repaint wp-admin.
+ *
+ * @since 1.1.0
+ *
+ * @return void
+ */
+function lumio_enqueue_liquid_editor_style(): void {
+
+	if ( ! is_admin() || ! lumio_is_liquid_style() ) {
+		return;
+	}
+
+	$screen = get_current_screen();
+
+	if ( ! $screen instanceof WP_Screen || ! $screen->is_block_editor() ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'lumio-liquid',
+		get_theme_file_uri( 'assets/css/liquid.css' ),
+		array(),
+		lumio_asset_version( 'assets/css/liquid.css' )
+	);
+}
+add_action( 'enqueue_block_assets', 'lumio_enqueue_liquid_editor_style' );
+
+/**
  * Modify the tag archive title to include a hashtag.
  *
  * @since 1.0.0

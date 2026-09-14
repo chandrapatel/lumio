@@ -1,0 +1,138 @@
+{
+	"$schema": "https://schemas.wp.org/wp/7.1/theme.json",
+	"version": 3,
+	"title": "Liquid Glass",
+	"description": "Lens-rimmed translucent surfaces over a soft colour field, sliding pill controls, a sticky floating header, and an airier spacing rhythm. Indigo brand and the Outfit / Fira type pairing are preserved.",
+	"settings": {
+		"spacing": {
+			"spacingSizes": [
+				{ "slug": "1", "size": "4px",                        "name": "1" },
+				{ "slug": "2", "size": "8px",                        "name": "2" },
+				{ "slug": "3", "size": "14px",                       "name": "3" },
+				{ "slug": "4", "size": "20px",                       "name": "4" },
+				{ "slug": "5", "size": "28px",                       "name": "5" },
+				{ "slug": "6", "size": "clamp(28px, 3.2vw, 40px)",   "name": "6" },
+				{ "slug": "7", "size": "clamp(40px, 5vw, 64px)",     "name": "7" },
+				{ "slug": "8", "size": "clamp(56px, 7vw, 96px)",     "name": "8" },
+				{ "slug": "9", "size": "clamp(64px, 9vw, 128px)",    "name": "9" }
+			]
+		},
+		"custom": {
+			"styleSlug": "liquid",
+			"radius": {
+				"default": "24px",
+				"xs": "8px",
+				"sm": "12px",
+				"md": "18px",
+				"lg": "28px",
+				"xl": "36px",
+				"pill": "999px"
+			},
+			"space": {
+				"gutter": "clamp(24px, 5vw, 56px)",
+				"section": "clamp(64px, 9vw, 128px)",
+				"card": "clamp(28px, 3.2vw, 40px)",
+				"stack": "clamp(20px, 2.4vw, 32px)"
+			},
+			"layout": {
+				"header-gap": "16px",
+				"header-height": "68px"
+			},
+			"page": {
+				"bg": "radial-gradient(1400px 900px at 8% -12%, #dcdcff 0%, transparent 58%), radial-gradient(1100px 800px at 108% 4%, #cfe6ff 0%, transparent 60%), radial-gradient(1000px 700px at 52% 112%, #ffe3f2 0%, transparent 58%), linear-gradient(180deg, #f2f3fc 0%, #e9ebf8 100%)"
+			},
+			"surface": {
+				"bg": "rgba(255,255,255,0.46)",
+				"bg-strong": "rgba(255,255,255,0.68)",
+				"bg-quiet": "rgba(255,255,255,0.28)",
+				"blur": "saturate(190%) blur(30px)",
+				"blur-heavy": "saturate(200%) blur(48px)",
+				"rim": "linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.30) 34%, rgba(255,255,255,0.10) 62%, rgba(255,255,255,0.62) 100%)",
+				"specular": "linear-gradient(180deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 42%)",
+				"hairline": "rgba(67,67,215,0.16)",
+				"tint": "rgba(67,67,215,0.10)",
+				"glare": "rgba(255,255,255,0.55)"
+			},
+			"shadow": {
+				"elev-1": "0 1px 2px rgba(15,18,60,0.05), 0 2px 8px -4px rgba(15,18,60,0.08)",
+				"elev-2": "0 2px 6px -2px rgba(15,18,60,0.07), 0 10px 28px -12px rgba(15,18,60,0.16)",
+				"elev-3": "0 4px 12px -4px rgba(15,18,60,0.09), 0 24px 56px -20px rgba(15,18,60,0.22)",
+				"elev-4": "0 8px 20px -8px rgba(15,18,60,0.12), 0 48px 96px -32px rgba(15,18,60,0.30)"
+			},
+			"btn": {
+				"brand-bg": "linear-gradient(180deg,#6e6ef2 0%,#4d4ddf 52%,#3f3fcb 100%)",
+				"brand-shadow": "inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.16), 0 8px 20px -8px rgba(67,67,215,0.55), 0 2px 6px -2px rgba(67,67,215,0.30)"
+			},
+			"focus": {
+				"ring": "0 0 0 4px rgba(67,67,215,0.20), 0 0 0 1.5px rgba(67,67,215,0.8)"
+			},
+			"motion": {
+				"ease-out": "cubic-bezier(0.22,0.9,0.24,1)",
+				"ease-spring": "cubic-bezier(0.34,1.4,0.5,1)",
+				"t-fast": "140ms",
+				"t-med": "280ms",
+				"t-slow": "480ms"
+			},
+			"code": {
+				"bg": "linear-gradient(180deg,#1b1b26 0%,#0c0c11 100%)"
+			}
+		}
+	},
+	"styles": {
+		"typography": {
+			"lineHeight": "1.8"
+		},
+		"elements": {
+			"button": {
+				"color": {
+					"text": "#ffffff"
+				},
+				"border": {
+					"radius": "var(--wp--custom--radius--pill)"
+				},
+				"spacing": {
+					"padding": { "top": "13px", "right": "24px", "bottom": "13px", "left": "24px" }
+				}
+			},
+			"textInput": {
+				"border": {
+					"radius": "var(--wp--custom--radius--md)"
+				},
+				"spacing": {
+					"padding": { "top": "12px", "right": "18px", "bottom": "12px", "left": "18px" }
+				}
+			},
+			"select": {
+				"border": {
+					"radius": "var(--wp--custom--radius--md)"
+				},
+				"spacing": {
+					"padding": { "top": "12px", "right": "40px", "bottom": "12px", "left": "18px" }
+				}
+			}
+		},
+		"blocks": {
+			"core/post-featured-image": {
+				"border": {
+					"radius": "var(--wp--custom--radius--lg)"
+				}
+			},
+			"core/code": {
+				"border": {
+					"radius": "var(--wp--custom--radius--lg)"
+				},
+				"spacing": {
+					"padding": { "top": "24px", "right": "28px", "bottom": "24px", "left": "28px" }
+				}
+			},
+			"core/preformatted": {
+				"border": {
+					"radius": "var(--wp--custom--radius--lg)"
+				},
+				"spacing": {
+					"padding": { "top": "24px", "right": "28px", "bottom": "24px", "left": "28px" }
+				}
+			}
+		}
+	}
+}
