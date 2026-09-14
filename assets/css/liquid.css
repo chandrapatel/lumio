@@ -260,7 +260,7 @@
 	margin-inline: auto;
 	min-height: var(--wp--custom--layout--header-height);
 	gap: 16px;
-	padding: 8px 12px 8px 22px;
+	padding: 8px 22px 8px 22px;
 	border-radius: var(--wp--custom--radius--pill);
 	background: transparent;
 }
@@ -425,8 +425,12 @@
    FOOTER
    ═══════════════════════════════════════════════════════════════════ */
 :root .site-footer {
-	/* parts/footer.html sets the top border inline. */
+	/* parts/footer.html sets the top border and both block paddings inline.
+	   The bottom mirrors the header's top gap, so the floating slab sits as far
+	   from the bottom of the page as the header pill does from the top. The top
+	   padding is left alone: it spaces the slab from the content above it. */
 	border-top-style: none !important;
+	padding-bottom: var(--wp--custom--layout--header-gap) !important;
 }
 
 .site-footer .wp-block-group.lumio-footer-bar {
@@ -948,10 +952,14 @@
 		padding-bottom: 0 !important;
 	}
 
+	:root .site-footer {
+		padding-bottom: 10px !important;
+	}
+
 	.site-header .wp-block-group.lumio-header-bar {
 		min-height: 58px;
 		gap: 10px;
-		padding: 8px 10px 8px 18px;
+		padding: 8px 18px 8px 18px;
 		border-radius: 30px;
 	}
 
