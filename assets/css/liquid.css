@@ -251,7 +251,6 @@
 
 .lumio-header-bar .wp-block-site-logo img {
 	border-radius: 9px;
-	box-shadow: var(--wp--custom--shadow--elev-1);
 }
 
 /* The header's nav blockGap is a preset the airier scale grew; pills want it tight. */
@@ -324,14 +323,24 @@
 	box-shadow: none;
 }
 
-/* Hamburger and the overlay it opens. */
+/* Hamburger and the overlay it opens.
+
+   Core gives this button `display: flex` and no alignment of its own, so the
+   24px icon sits in the corner of anything larger than itself. The 40px box
+   stays — it is the touch target — but it has to centre what it holds.
+
+   Do not add `display` here. Core hides the button above 600px with
+   `.wp-block-navigation__responsive-container-open:not(.always-shown)`, which
+   this selector ties on specificity and beats on source order, so declaring a
+   display value brings the hamburger back on desktop. Core's own unconditional
+   `display: flex` is what these two alignment properties act on. */
 .lumio-header-bar .wp-block-navigation__responsive-container-open {
+	align-items: center;
+	justify-content: center;
 	width: 40px;
 	height: 40px;
 	padding: 0;
 	border-radius: var(--wp--custom--radius--pill);
-	background: var(--wp--custom--surface--bg-strong);
-	box-shadow: var(--wp--custom--shadow--elev-1);
 	color: var(--wp--preset--color--text-secondary);
 }
 
@@ -348,6 +357,9 @@
 }
 
 .wp-block-navigation__responsive-container-close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 40px;
 	height: 40px;
 	border-radius: var(--wp--custom--radius--pill);
@@ -686,7 +698,12 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAGINATION AND POST NAVIGATION
+   PAGINATION
+
+   Post navigation (single.html's previous/next links) is deliberately absent
+   here. theme.json styles it as a plain brand-coloured link, and giving it a
+   glass pill in this style alone made the two styles disagree about what that
+   block is. It stays a link in both.
    ═══════════════════════════════════════════════════════════════════ */
 :root .wp-block-query-pagination-numbers .page-numbers {
 	min-width: 42px;
@@ -710,8 +727,7 @@
 	box-shadow: var(--wp--custom--btn--brand-shadow);
 }
 
-:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next),
-:root .wp-block-post-navigation-link a {
+:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next) {
 	display: inline-flex;
 	align-items: center;
 	padding: 10px 20px;
@@ -724,8 +740,7 @@
 		transform var(--wp--custom--motion--t-fast) var(--wp--custom--motion--ease-spring);
 }
 
-:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next):hover,
-:root .wp-block-post-navigation-link a:hover {
+:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next):hover {
 	background: var(--wp--custom--surface--bg-strong);
 	transform: translateY(-2px);
 }
@@ -849,7 +864,6 @@
 	.wp-block-query-pagination-numbers .page-numbers,
 	.wp-block-query-pagination-previous,
 	.wp-block-query-pagination-next,
-	.wp-block-post-navigation-link a,
 	.wp-block-navigation__responsive-container-open,
 	.wp-block-navigation__responsive-container-close
 ):focus-visible {
@@ -871,7 +885,6 @@
 	:root .wp-block-post-terms a:hover,
 	:root .wp-block-query-pagination-numbers a.page-numbers:hover,
 	:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next):hover,
-	:root .wp-block-post-navigation-link a:hover,
 	.wp-block-button .wp-block-button__link:active,
 	.wp-block-search .wp-block-search__button:active {
 		transform: none;
@@ -905,6 +918,33 @@
 	.lumio-post-row,
 	.lumio-archive-row {
 		padding-inline: 24px;
+	}
+
+	/* Pagination.
+
+	   "Previous Page" and "Next Page" are wide enough that the three parts
+	   cannot share a line here, and the default wrap strands the numbers
+	   beside the previous pill with the next pill alone underneath. Give the
+	   numbers a row of their own above the two pills instead.
+
+	   The block needs an explicit width because it is a shrink-to-fit flex
+	   item of the wrapper group: without one, the row the numbers claim is
+	   only as wide as the content it happens to hold. */
+	:root .wp-block-query-pagination {
+		width: 100%;
+		row-gap: 12px;
+	}
+
+	.wp-block-query-pagination .wp-block-query-pagination-numbers {
+		order: -1;
+		flex-basis: 100%;
+		display: flex;
+		justify-content: center;
+		gap: 4px;
+	}
+
+	:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next) {
+		padding: 9px 18px;
 	}
 
 	:root .wp-block-quote,
