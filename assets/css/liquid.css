@@ -201,11 +201,29 @@
    The default style's header is a bordered full-width strip. Liquid turns
    the inner flex group into a floating glass pill and makes the wrapper
    sticky and transparent, so page content blurs beneath it as it scrolls.
+
+   The sticky element has to be the template-part wrapper, not `.site-header`
+   inside it. Every template renders the part with `tagName: "header"`, so core
+   emits `<header class="wp-block-template-part">` around the part's own root
+   element. A sticky box can only travel inside its containing block, and that
+   wrapper is exactly as tall as the header it holds — sticking `.site-header`
+   itself pins it to a box it already fills, which looks like nothing happening.
    ═══════════════════════════════════════════════════════════════════ */
-:root .site-header {
+:root header.wp-block-template-part {
 	position: sticky;
 	top: 0;
 	z-index: 100;
+}
+
+/* The admin bar is fixed above 782px and would cover the header; below that it
+   scrolls away with the page, so an offset there would strand a gap instead. */
+@media screen and (min-width: 783px) {
+	:root .admin-bar header.wp-block-template-part {
+		top: var(--wp-admin--admin-bar--height, 32px);
+	}
+}
+
+:root .site-header {
 	background: transparent;
 
 	/* parts/header.html sets the bottom border and both block paddings inline.
@@ -234,8 +252,9 @@
  * this bar — blurring the bar directly would shrink that full-screen overlay to
  * the size of the header. A pseudo-element has no descendants to trap.
  *
- * z-index -1 keeps it behind the brand and nav; .site-header is already a stacking
- * context (sticky plus z-index), so it cannot slide behind the page content.
+ * z-index -1 keeps it behind the brand and nav; the template-part wrapper above is
+ * already a stacking context (sticky plus z-index), so it cannot slide behind the
+ * page content.
  */
 .lumio-header-bar::after {
 	content: "";
@@ -882,6 +901,7 @@
 	.lumio-post-row:focus-within,
 	.lumio-archive-row:focus-within,
 	:root .lumio-recent-card:hover,
+	:root .lumio-recent-card:focus-within,
 	:root .wp-block-post-terms a:hover,
 	:root .wp-block-query-pagination-numbers a.page-numbers:hover,
 	:root :is(.wp-block-query-pagination-previous, .wp-block-query-pagination-next):hover,
