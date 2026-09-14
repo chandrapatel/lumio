@@ -141,10 +141,30 @@
    Glass only reads as glass with something behind it, so the flat
    background colour becomes a soft colour field. `:root body` outranks
    the `:root :where(body)` rule theme.json prints for styles.color.
+
+   The field is painted by a fixed pseudo-element rather than by
+   `background-attachment: fixed` on the body itself. A fixed attachment
+   cannot be composited: the browser re-rasterises that background on every
+   scroll frame, and every backdrop-filter on the page re-samples it as it
+   moves. In Chromium that combination drops card content mid-scroll — the
+   card keeps its fill and its rim, while everything inside it that is not on
+   a composited layer of its own stops painting. A fixed-position layer is
+   rasterised once and translated, and reads identically.
+
+   The body keeps a flat fill underneath so a failure here degrades to the
+   theme's own background colour rather than to white.
    ═══════════════════════════════════════════════════════════════════ */
 :root body {
+	background: var(--wp--preset--color--background);
+}
+
+:root body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: -1;
 	background: var(--wp--custom--page--bg);
-	background-attachment: fixed;
+	pointer-events: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
